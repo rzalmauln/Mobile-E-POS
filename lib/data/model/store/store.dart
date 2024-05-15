@@ -12,8 +12,6 @@ class Store with _$Store {
     required String name,
     required String username,
     required String password,
-    required int categoryId,
-    required int orderId,
   }) = _Store;
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);

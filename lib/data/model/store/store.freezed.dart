@@ -24,8 +24,6 @@ mixin _$Store {
   String get name => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  int get categoryId => throw _privateConstructorUsedError;
-  int get orderId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,13 +35,7 @@ abstract class $StoreCopyWith<$Res> {
   factory $StoreCopyWith(Store value, $Res Function(Store) then) =
       _$StoreCopyWithImpl<$Res, Store>;
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      String username,
-      String password,
-      int categoryId,
-      int orderId});
+  $Res call({int id, String name, String username, String password});
 }
 
 /// @nodoc
@@ -63,8 +55,6 @@ class _$StoreCopyWithImpl<$Res, $Val extends Store>
     Object? name = null,
     Object? username = null,
     Object? password = null,
-    Object? categoryId = null,
-    Object? orderId = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -83,14 +73,6 @@ class _$StoreCopyWithImpl<$Res, $Val extends Store>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      orderId: null == orderId
-          ? _value.orderId
-          : orderId // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -102,13 +84,7 @@ abstract class _$$StoreImplCopyWith<$Res> implements $StoreCopyWith<$Res> {
       __$$StoreImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      String username,
-      String password,
-      int categoryId,
-      int orderId});
+  $Res call({int id, String name, String username, String password});
 }
 
 /// @nodoc
@@ -126,8 +102,6 @@ class __$$StoreImplCopyWithImpl<$Res>
     Object? name = null,
     Object? username = null,
     Object? password = null,
-    Object? categoryId = null,
-    Object? orderId = null,
   }) {
     return _then(_$StoreImpl(
       id: null == id
@@ -146,14 +120,6 @@ class __$$StoreImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      orderId: null == orderId
-          ? _value.orderId
-          : orderId // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -166,9 +132,7 @@ class _$StoreImpl with DiagnosticableTreeMixin implements _Store {
       {required this.id,
       required this.name,
       required this.username,
-      required this.password,
-      required this.categoryId,
-      required this.orderId});
+      required this.password});
 
   factory _$StoreImpl.fromJson(Map<String, dynamic> json) =>
       _$$StoreImplFromJson(json);
@@ -181,14 +145,10 @@ class _$StoreImpl with DiagnosticableTreeMixin implements _Store {
   final String username;
   @override
   final String password;
-  @override
-  final int categoryId;
-  @override
-  final int orderId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Store(id: $id, name: $name, username: $username, password: $password, categoryId: $categoryId, orderId: $orderId)';
+    return 'Store(id: $id, name: $name, username: $username, password: $password)';
   }
 
   @override
@@ -199,9 +159,7 @@ class _$StoreImpl with DiagnosticableTreeMixin implements _Store {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('username', username))
-      ..add(DiagnosticsProperty('password', password))
-      ..add(DiagnosticsProperty('categoryId', categoryId))
-      ..add(DiagnosticsProperty('orderId', orderId));
+      ..add(DiagnosticsProperty('password', password));
   }
 
   @override
@@ -214,16 +172,12 @@ class _$StoreImpl with DiagnosticableTreeMixin implements _Store {
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.password, password) ||
-                other.password == password) &&
-            (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.orderId, orderId) || other.orderId == orderId));
+                other.password == password));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, username, password, categoryId, orderId);
+  int get hashCode => Object.hash(runtimeType, id, name, username, password);
 
   @JsonKey(ignore: true)
   @override
@@ -244,9 +198,7 @@ abstract class _Store implements Store {
       {required final int id,
       required final String name,
       required final String username,
-      required final String password,
-      required final int categoryId,
-      required final int orderId}) = _$StoreImpl;
+      required final String password}) = _$StoreImpl;
 
   factory _Store.fromJson(Map<String, dynamic> json) = _$StoreImpl.fromJson;
 
@@ -258,10 +210,6 @@ abstract class _Store implements Store {
   String get username;
   @override
   String get password;
-  @override
-  int get categoryId;
-  @override
-  int get orderId;
   @override
   @JsonKey(ignore: true)
   _$$StoreImplCopyWith<_$StoreImpl> get copyWith =>
