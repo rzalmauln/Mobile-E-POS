@@ -1,3 +1,4 @@
+import 'package:e_pos/views/login_screen.dart';
 import 'package:e_pos/views/register_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
       home: const Scaffold(
-        body: RegisterScreen(),
+        body: LoginScreen(),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:e_pos/views/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF2563EB),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         // toolbarHeight: 76,
         title: const Text(
           "Jaya Makmur POS",
@@ -102,7 +104,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: Color(0xFF2563EB)),
                         ),
                         GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ));
+                            },
                             child: const Text(
                               "Klik disini",
                               style: TextStyle(
