@@ -1,4 +1,4 @@
-import 'package:e_pos/views/store_screen.dart';
+import 'package:e_pos/views/register_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,11 +10,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: StoreScreen(),
-        ),
+    return MaterialApp(
+      theme: ThemeData(fontFamily: "Plus Jakarta Sans"),
+      home: const Scaffold(
+        body: RegisterScreen(),
       ),
     );
   }
