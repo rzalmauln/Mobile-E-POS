@@ -120,13 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: FilledButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(
+                      shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       backgroundColor:
-                          const MaterialStatePropertyAll(Color(0xFF2563EB)),
+                          const WidgetStatePropertyAll(Color(0xFF2563EB)),
                     ),
                     child: const Text(
                       "Selanjutnya",

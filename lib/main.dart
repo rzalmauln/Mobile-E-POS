@@ -1,5 +1,4 @@
 import 'package:e_pos/views/login_screen.dart';
-import 'package:e_pos/views/register_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

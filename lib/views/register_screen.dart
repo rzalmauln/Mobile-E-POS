@@ -131,13 +131,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: FilledButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(
+                      shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       backgroundColor:
-                          const MaterialStatePropertyAll(Color(0xFF2563EB)),
+                          const WidgetStatePropertyAll(Color(0xFF2563EB)),
                     ),
                     child: const Text(
                       "Selanjutnya",
@@ -167,7 +167,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       {required String label,
       required String hintText,
       bool obscureText = false,
-      required TextEditingController controller}) {
+      required TextEditingController controller,
+      String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -187,6 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: SizedBox(
             height: 48,
             child: TextFormField(
+              validator: validator,
               obscureText: obscureText,
               controller: controller,
               decoration: InputDecoration(
