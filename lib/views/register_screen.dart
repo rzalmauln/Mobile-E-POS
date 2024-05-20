@@ -73,23 +73,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     label: "Nama Bisnis(toko, cafe, dll)",
                     hintText: "cth: Razol Berkah Makmur",
                     controller: _namaBisnisController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Nama bisnis tidak boleh kosong";
+                      }
+                      return null;
+                    },
                   ),
                   _buildTextFormField(
                     label: "Username",
                     hintText: "cht: razolmakmur",
                     controller: _usernameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Username tidak boleh kosong";
+                      } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+                        return "Username hanya boleh mengandung huruf, angka, dan underscore";
+                      }
+                      return null;
+                    },
                   ),
                   _buildTextFormField(
                     label: "Password",
                     hintText: "Kata sandi 8 karakter",
                     obscureText: true,
                     controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password tidak boleh kosong";
+                      } else if (value.length < 8) {
+                        return "Password harus terdiri dari minimal 8 karakter";
+                      }
+                      return null;
+                    },
                   ),
                   _buildTextFormField(
                     label: "Konfirmasi Password",
                     hintText: "Konfirmasi kata sandi",
                     obscureText: true,
                     controller: _konfirmasiPasswordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Konfirmasi password tidak boleh kosong";
+                      } else if (value != _passwordController.text) {
+                        return "Konfirmasi password tidak sesuai";
+                      }
+                      return null;
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -104,20 +134,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: Color(0xFF2563EB)),
                         ),
                         GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ));
-                            },
-                            child: const Text(
-                              "Klik disini",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF2563EB)),
-                            ))
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ));
+                          },
+                          child: const Text(
+                            "Klik disini",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF2563EB)),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -168,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       required String hintText,
       bool obscureText = false,
       required TextEditingController controller,
-      String? Function(String?)? validator}) {
+      String? Function(String? value)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -192,24 +223,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
               obscureText: obscureText,
               controller: controller,
               decoration: InputDecoration(
-                  hintText: hintText,
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: Color(0xFF64748B),
+                hintText: hintText,
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(
+                    color: Color(0xFFCBD5E1),
                   ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    borderSide: BorderSide(
-                      color: Color(0xFFCBD5E1),
-                    ),
+                ),
+                hintStyle: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: Color(0xFF64748B),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  borderSide: BorderSide(
+                    color: Color(0xFF2563EB),
+                    width: 1.5,
                   ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    borderSide: BorderSide(
-                      color: Color(0xFF2563EB),
-                    ),
-                  )),
+                ),
+              ),
             ),
           ),
         ),

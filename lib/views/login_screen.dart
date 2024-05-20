@@ -72,12 +72,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: "Username",
                     hintText: "cth: razolmakmur",
                     controller: _usernameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Username tidak boleh kosong";
+                      }
+                      return null;
+                    },
                   ),
                   _buildTextFormField(
                     label: "Password",
                     hintText: "Kata sandi 8 karakter",
                     obscureText: true,
                     controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password tidak boleh kosong";
+                      }
+                      return null;
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -147,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
       {required String label,
       required String hintText,
       bool obscureText = false,
-      required TextEditingController controller}) {
+      required TextEditingController controller,
+      String? Function(String? value)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -167,16 +180,17 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SizedBox(
             height: 48,
             child: TextFormField(
+              validator: validator,
               obscureText: obscureText,
               controller: controller,
               decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: const TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Color(0xFF64748B),
                   ),
-                  enabledBorder: const OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     borderSide: BorderSide(
                       color: Color(0xFFCBD5E1),
@@ -186,6 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     borderSide: BorderSide(
                       color: Color(0xFF2563EB),
+                      width: 1.5,
                     ),
                   )),
             ),
