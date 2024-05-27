@@ -1,3 +1,4 @@
+import 'package:e_pos/views/stock/stock_view.dart';
 import 'package:e_pos/views/store_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: StoreScreen(),
+          child: StockView(),
         ),
       ),
     );
