@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -37,73 +38,75 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                  const Center(
-                    child: Text(
-                      "Selamat Datang!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 28,
-                      ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 20,
                     ),
-                  ),
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                    const Center(
                       child: Text(
-                        "Silahkan login menggunakan kredensial anda",
+                        "Selamat Datang!",
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF64748B),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 20,
-                  ),
-                  _buildTextFormField(
-                    label: "Username",
-                    hintText: "cth: razolmakmur",
-                    controller: _usernameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Username tidak boleh kosong";
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    label: "Password",
-                    hintText: "Kata sandi 8 karakter",
-                    obscureText: true,
-                    controller: _passwordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Password tidak boleh kosong";
-                      }
-                      return null;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Pertama kali menggunakan aplikasi? ",
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Silahkan login menggunakan kredensial anda",
                           style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF2563EB)),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF64748B),
+                          ),
                         ),
-                        GestureDetector(
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 20,
+                    ),
+                    _buildTextFormField(
+                      label: "Username",
+                      hintText: "cth: razolmakmur",
+                      controller: _usernameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Username tidak boleh kosong";
+                        }
+                        return null;
+                      },
+                    ),
+                    _buildTextFormField(
+                      label: "Password",
+                      hintText: "Kata sandi 8 karakter",
+                      obscureText: true,
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Password tidak boleh kosong";
+                        }
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Pertama kali menggunakan aplikasi? ",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF2563EB)),
+                          ),
+                          GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -118,11 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF2563EB)),
-                            ))
-                      ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -130,7 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {}
+                    },
                     style: ButtonStyle(
                       shape: WidgetStatePropertyAll(
                         RoundedRectangleBorder(
