@@ -1,3 +1,4 @@
+import 'package:e_pos/views/home/home_page.dart';
 import 'package:e_pos/views/store_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: StoreScreen(),
-        ),
-      ),
+      home: HomePage(
+          // body: Center(
+          //   child: StoreScreen(),
+          // ),
+          ),
     );
   }
 }
