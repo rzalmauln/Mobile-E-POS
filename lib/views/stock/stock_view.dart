@@ -179,7 +179,10 @@ class _StockViewState extends State<StockView> {
               children: [
                 IconButton(
                   icon: Icon(Icons.edit_outlined, color: Colors.yellow[500]),
-                  onPressed: () {},
+                  onPressed: () {
+                    _showEditDialog(stock
+                        .indexWhere((element) => element['title'] == title));
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.delete_outline_rounded,
@@ -193,6 +196,107 @@ class _StockViewState extends State<StockView> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showEditDialog(int index) {
+    var item = stock[index];
+    TextEditingController titleController =
+        TextEditingController(text: item['title'].toString());
+    TextEditingController qtyController =
+        TextEditingController(text: item['qty'].toString());
+    TextEditingController priceController =
+        TextEditingController(text: item['price'].toString());
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            child: Material(
+              type: MaterialType.transparency,
+              child: Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Edit Produk",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          labelText: "Nama",
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: qtyController,
+                        decoration: InputDecoration(
+                          labelText: "Stock",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: priceController,
+                        decoration: InputDecoration(
+                          labelText: "Harga",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 24.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                stock[index]['title'] = titleController.text;
+                                stock[index]['qty'] =
+                                    int.parse(qtyController.text);
+                                stock[index]['price'] =
+                                    int.parse(priceController.text);
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Text("Save"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -225,7 +329,7 @@ class _StockViewState extends State<StockView> {
     );
   }
 
-  Future<bool> _setAlertDelete(BuildContext context,String title) async {
+  Future<bool> _setAlertDelete(BuildContext context, String title) async {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -243,7 +347,8 @@ class _StockViewState extends State<StockView> {
             ),
           ),
         ),
-        content: Text("Aksi ini akan menghapus produk ${title} dari Stok & Inventori",
+        content: Text(
+            "Aksi ini akan menghapus produk ${title} dari Stok & Inventori",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey[600])),
         actions: [
@@ -259,7 +364,6 @@ class _StockViewState extends State<StockView> {
                     margin: EdgeInsets.all(1),
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      // color: const Color.fromARGB(255, 255, 255, 255),
                       border: Border.all(color: Colors.grey[600]!),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -272,10 +376,15 @@ class _StockViewState extends State<StockView> {
                   ),
                 ),
               ),
-              SizedBox(width: 12,),
+              SizedBox(
+                width: 12,
+              ),
               Expanded(
                 child: GestureDetector(
                   onTap: () {
+                    setState(() {
+                      stock.removeWhere((element) => element['title'] == title);
+                    });
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
