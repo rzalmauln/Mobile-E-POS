@@ -33,47 +33,47 @@ class _StockViewState extends State<StockView> {
       "price": 3000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue paseo",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue 1",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue2",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue3",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue4",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue5",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue6",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue7",
       "qty": 50,
       "price": 2000,
     },
     {
-      "title": "Tissue",
+      "title": "Tissue8",
       "qty": 50,
       "price": 2000,
     },
@@ -384,6 +384,13 @@ class _StockViewState extends State<StockView> {
                   onTap: () {
                     setState(() {
                       stock.removeWhere((element) => element['title'] == title);
+                      Navigator.of(context).pop(true);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Item telah terhapus'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     });
                   },
                   child: Container(
