@@ -97,7 +97,7 @@ class _StockViewState extends State<StockView> {
             icon: Icons.add,
             label: "Tambah Produk",
             onTap: () {
-              // Action for adding new product
+              _showAddDialog();
             },
           ),
         ],
@@ -199,6 +199,109 @@ class _StockViewState extends State<StockView> {
     );
   }
 
+  void _showAddDialog() {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController qtyController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            child: Material(
+              type: MaterialType.transparency,
+              child: Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Tambah Produk",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          labelText: "Nama",
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: qtyController,
+                        decoration: InputDecoration(
+                          labelText: "Stock",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: priceController,
+                        decoration: InputDecoration(
+                          labelText: "Harga",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: 24.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                stock.add({
+                                  'title': titleController.text,
+                                  'qty': int.parse(qtyController.text),
+                                  'price': int.parse(priceController.text),
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Item Berhasil Ditambah'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Text("Save"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _showEditDialog(int index) {
     var item = stock[index];
     TextEditingController titleController =
@@ -270,6 +373,7 @@ class _StockViewState extends State<StockView> {
                         children: [
                           TextButton(
                             onPressed: () {
+                             
                               Navigator.pop(context);
                             },
                             child: Text("Cancel"),
@@ -283,6 +387,12 @@ class _StockViewState extends State<StockView> {
                                 stock[index]['price'] =
                                     int.parse(priceController.text);
                               });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Item berhasil Diedit'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
                               Navigator.pop(context);
                             },
                             child: Text("Save"),
@@ -387,7 +497,7 @@ class _StockViewState extends State<StockView> {
                       Navigator.of(context).pop(true);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Item telah terhapus'),
+                          content: Text('Item Berhasil Dihapus'),
                           duration: Duration(seconds: 2),
                         ),
                       );
