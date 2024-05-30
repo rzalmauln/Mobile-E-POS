@@ -1,5 +1,3 @@
-import 'package:e_pos/data/faker/store_factory.dart';
-import 'package:e_pos/data/services/store_service.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

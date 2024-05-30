@@ -1,7 +1,5 @@
 import 'package:e_pos/core/app_theme_data.dart';
 import 'package:e_pos/cubit/store/cubit_store.dart';
-import 'package:e_pos/data/faker/store_factory.dart';
-import 'package:e_pos/data/services/store_service.dart';
 import 'package:e_pos/injection_container.dart';
 import 'package:e_pos/views/pin/pin_screen.dart';
 import 'package:flutter/material.dart';
