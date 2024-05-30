@@ -21,15 +21,15 @@ class AppThemeData {
     };
 
     final MaterialColor primaryMaterialColor =
-      MaterialColor(primaryColor.value, primaryColorMap);
+        MaterialColor(primaryColor.value, primaryColorMap);
 
     return ThemeData(
-      useMaterial3: false,
-      primaryColor: primaryColor,
-      primarySwatch: primaryMaterialColor,
-      scaffoldBackgroundColor: ColorValues.grayscale100,
-      canvasColor: ColorValues.grayscale100,
-      hintColor: ColorValues.grayscale900,
+        useMaterial3: false,
+        primaryColor: primaryColor,
+        primarySwatch: primaryMaterialColor,
+        scaffoldBackgroundColor: ColorValues.grayscale100,
+        canvasColor: ColorValues.grayscale100,
+        hintColor: ColorValues.grayscale900,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 0,
           showSelectedLabels: true,
@@ -83,7 +83,6 @@ class AppThemeData {
           ),
           labelLarge: GoogleFonts.plusJakartaSans(
               fontSize: 12, fontWeight: FontWeight.w500),
-        )
-    );
+        ));
   }
 }

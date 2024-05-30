@@ -12,7 +12,7 @@ class StorePresenter {
     _view.showLoading();
     try {
       final stores = await _storeService.getStores();
-      _view.showStores(stores);
+      _view.showStores(stores!);
     } catch (e) {
       _view.showError(e.toString());
     }
