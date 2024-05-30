@@ -11,6 +11,7 @@ class StockView extends StatefulWidget {
 }
 
 class _StockViewState extends State<StockView> {
+  final stock1 = [];
   final stock = [
     {
       "title": "Sabun mandi",
@@ -28,54 +29,49 @@ class _StockViewState extends State<StockView> {
       "price": 5000,
     },
     {
-      "title": "Sikat Gigi",
-      "qty": 30,
-      "price": 3000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue paseo",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue 1",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue2",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue3",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue4",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue5",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue6",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
     {
-      "title": "Tissue7",
-      "qty": 50,
-      "price": 2000,
-    },
-    {
-      "title": "Tissue8",
-      "qty": 50,
-      "price": 2000,
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
     },
   ];
   @override
@@ -88,9 +84,7 @@ class _StockViewState extends State<StockView> {
           _buildActionButton(
             icon: Icons.file_download_outlined,
             label: "Import Data",
-            onTap: () {
-              // Action for importing data
-            },
+            onTap: () {},
           ),
           SizedBox(height: 12),
           _buildActionButton(
@@ -115,28 +109,41 @@ class _StockViewState extends State<StockView> {
         ),
         title: const Text(
           'Stock & Inventori',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 16,
+              letterSpacing: -0.32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: stock.length,
-                itemBuilder: (context, index) {
-                  var item = stock[index];
-                  return _buildCard(item['title'].toString(),
-                      item['qty'] as int, item['price'] as int);
-                },
-              ),
-            ],
-          ),
-        ),
+            color: Colors.grey[100],
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            child: stock.isEmpty
+                ? Container(
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: Center(
+                      child: Text(
+                        "Anda Belum Menambah Produk",
+                        style: TextStyle(
+                          fontSize: 17,
+                          letterSpacing: -0.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: stock.length,
+                    itemBuilder: (context, index) {
+                      var item = stock[index];
+                      return _buildCard(item['title'].toString(),
+                          item['qty'] as int, item['price'] as int);
+                    },
+                  )),
       ),
     );
   }
@@ -162,14 +169,22 @@ class _StockViewState extends State<StockView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(title,
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                 Text(
                   "Stock : ${qty}",
-                  style: TextStyle(color: Colors.grey[500]),
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey[500]),
                 ),
                 Text(
                   "Rp ${price}",
-                  style: TextStyle(color: Colors.blue[600]),
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[600]),
                 ),
               ],
             ),
@@ -208,70 +223,132 @@ class _StockViewState extends State<StockView> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            child: Material(
-              type: MaterialType.transparency,
-              child: Dialog(
-                shape: RoundedRectangleBorder(
+        return Container(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Tambah Produk",
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Nama",
                           style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 16.0),
-                      TextField(
-                        controller: titleController,
-                        decoration: InputDecoration(
-                          labelText: "Nama",
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal)),
+                    ),
+
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 10.0),
+                        labelStyle: TextStyle(
+                          color: Colors.grey[500]!,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        labelText: "Nama",
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[600]!),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Stock",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    TextField(
+                      controller: qtyController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 10.0),
+                        labelStyle: TextStyle(
+                          color: Colors.grey[500]!,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        labelText: "Stock",
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[600]!),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                       ),
-                      SizedBox(height: 16.0),
-                      TextField(
-                        controller: qtyController,
-                        decoration: InputDecoration(
-                          labelText: "Stock",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Harga",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    TextField(
+                      controller: priceController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 10.0),
+                        labelStyle: TextStyle(
+                          color: Colors.grey[500]!,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
                         ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: 16.0),
-                      TextField(
-                        controller: priceController,
-                        decoration: InputDecoration(
-                          labelText: "Harga",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
+                        labelText: "Harga",
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[600]!),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        keyboardType: TextInputType.number,
                       ),
-                      SizedBox(height: 24.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(height: 24.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
                               Navigator.pop(context);
                             },
-                            child: Text("Cancel"),
+                            child: Container(
+                              margin: EdgeInsets.all(1),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.red[600]!),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Batal',
+                                  style: TextStyle(color: Colors.red[600]!),
+                                ),
+                              ),
+                            ),
                           ),
-                          TextButton(
-                            onPressed: () {
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
                               setState(() {
                                 stock.add({
                                   'title': titleController.text,
@@ -287,12 +364,25 @@ class _StockViewState extends State<StockView> {
                               });
                               Navigator.pop(context);
                             },
-                            child: Text("Save"),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.blue[600],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Tambah',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -315,53 +405,73 @@ class _StockViewState extends State<StockView> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            child: Material(
-              type: MaterialType.transparency,
-              child: Dialog(
-                shape: RoundedRectangleBorder(
+        return Container(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: Column(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Edit Produk",
-                          style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 16.0),
+                      Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Nama", style: TextStyle(color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal)),
+                    ),
                       TextField(
                         controller: titleController,
                         decoration: InputDecoration(
-                          labelText: "Nama",
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 10.0),
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey[600]!),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                         ),
                       ),
-                      SizedBox(height: 16.0),
+                      SizedBox(height: 20.0),
+                      Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Stock", style: TextStyle(color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal)),
+                    ),
                       TextField(
                         controller: qtyController,
                         decoration: InputDecoration(
-                          labelText: "Stock",
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 10.0),
                           border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[600]!),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
                         keyboardType: TextInputType.number,
                       ),
-                      SizedBox(height: 16.0),
+                      SizedBox(height: 20.0),
+                      Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text("Harga", style: TextStyle(color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal)),
+                    ),
                       TextField(
                         controller: priceController,
                         decoration: InputDecoration(
-                          labelText: "Harga",
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 10.0),
                           border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[600]!),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
@@ -369,39 +479,68 @@ class _StockViewState extends State<StockView> {
                       ),
                       SizedBox(height: 24.0),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          TextButton(
-                            onPressed: () {
-                             
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                stock[index]['title'] = titleController.text;
-                                stock[index]['qty'] =
-                                    int.parse(qtyController.text);
-                                stock[index]['price'] =
-                                    int.parse(priceController.text);
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Item berhasil Diedit'),
-                                  duration: Duration(seconds: 2),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(1),
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red[600]!),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              );
-                              Navigator.pop(context);
-                            },
-                            child: Text("Save"),
+                                child: Center(
+                                  child: Text(
+                                    'Batal',
+                                    style: TextStyle(color: Colors.red[600]!),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  stock[index]['title'] = titleController.text;
+                                  stock[index]['qty'] =
+                                      int.parse(qtyController.text);
+                                  stock[index]['price'] =
+                                      int.parse(priceController.text);
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Item berhasil Diedit'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[600],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Edit',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
+                    ]),
               ),
             ),
           ),
@@ -417,7 +556,7 @@ class _StockViewState extends State<StockView> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 190,
+        width: 195,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
@@ -432,7 +571,12 @@ class _StockViewState extends State<StockView> {
           children: [
             Icon(icon, color: Colors.white),
             SizedBox(width: 12),
-            Text(label, style: TextStyle(color: Colors.white)),
+            Text(label,
+                style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: -0.32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
           ],
         ),
       ),
