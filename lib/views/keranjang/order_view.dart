@@ -15,7 +15,12 @@ class _OrderViewState extends State<OrderView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Keranjang', style: TextStyle(color: Colors.white)),
+        title: const Text('Keranjang',
+            style: TextStyle(
+                fontSize: 16,
+                letterSpacing: -0.32,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
         leading: GestureDetector(
           child: Icon(Icons.arrow_back, color: Colors.white),
           onTap: () {
@@ -46,7 +51,13 @@ class _OrderViewState extends State<OrderView> {
                     Icon(Icons.bookmark, color: Colors.blue[600]),
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
-                      child: Text('Rincian Transaksi'),
+                      child: Text(
+                        'Rincian Transaksi',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -57,9 +68,16 @@ class _OrderViewState extends State<OrderView> {
                     children: [
                       Text(
                         "ID Transaksi",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
                       ),
-                      Text("123456")
+                      Text(
+                        "123456",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -70,9 +88,14 @@ class _OrderViewState extends State<OrderView> {
                     children: [
                       Text(
                         "Tanggal Transaksi",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
                       ),
-                      Text("23/04/1999")
+                      Text("23/04/1999",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                          ))
                     ],
                   ),
                 ),
@@ -108,9 +131,14 @@ class _OrderViewState extends State<OrderView> {
               children: [
                 Text(
                   "Bayar",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 ),
-                Text("Rp. 100.000"),
+                Text(
+                  "Rp. 100.000",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
@@ -130,9 +158,14 @@ class _OrderViewState extends State<OrderView> {
               children: [
                 Text(
                   "Kembalian",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 ),
-                Text("Rp. 0"),
+                Text(
+                  "Rp. 0",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
@@ -145,14 +178,20 @@ class _OrderViewState extends State<OrderView> {
                 Text(
                   "Bayar (Check Out)",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                      fontSize: 17,
+                      letterSpacing: -0.5,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 Row(
                   children: [
                     Text(
                       "Rp. 100.000",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontSize: 17,
+                          letterSpacing: -0.5,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                     IconButton(
                       onPressed: () {
@@ -192,15 +231,19 @@ class _OrderViewState extends State<OrderView> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(title,
+                    style:
+                        TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                 Text(
                   "${qty} x ${price}",
                   style: TextStyle(
-                      color: Colors.grey[400], fontWeight: FontWeight.bold),
+                      fontSize: 11,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Rp${(qty * price).toString()}",
-                  style: TextStyle(color: Colors.blue[600]),
+                  style: TextStyle(fontSize: 11, color: Colors.blue[600]),
                 ),
               ],
             ),
@@ -303,7 +346,6 @@ class _OrderViewState extends State<OrderView> {
             style: TextStyle(color: Colors.grey[600])),
         actions: [
           Row(
-
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
@@ -328,11 +370,12 @@ class _OrderViewState extends State<OrderView> {
                   ),
                 ),
               ),
-              SizedBox(width: 12,),
+              SizedBox(
+                width: 12,
+              ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     padding: EdgeInsets.all(16),
