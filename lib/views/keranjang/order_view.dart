@@ -233,7 +233,7 @@ class _OrderViewState extends State<OrderView> {
               children: [
                 Text(title,
                     style:
-                        TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                 Text(
                   "${qty} x ${price}",
                   style: TextStyle(
