@@ -9,9 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.4.0
   freezed_annotation: ^2.4.1
+  google_fonts: ^6.2.1
   json_annotation: ^4.9.0
   path: ^1.9.0
+  shared_preferences: ^2.2.3
+  sizer: ^2.0.15
   sqflite: ^2.3.3+1
 
 dev_dependencies:
@@ -24,6 +28,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
   fonts:
     - family: "Plus Jakarta Sans"
       fonts:
