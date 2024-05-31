@@ -1,5 +1,4 @@
 import 'package:faker/faker.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class ModelFaker<T> {
   Faker get faker => Faker();

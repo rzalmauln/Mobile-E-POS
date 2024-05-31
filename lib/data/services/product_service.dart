@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import '../../data/model/product/product.dart';
 import '../helper/database_helper.dart';
 

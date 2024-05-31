@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:e_pos/cubit/store/cubit_store_state.dart';
+import 'package:e_pos/cubits/store/cubit_store_state.dart';
 import 'package:e_pos/data/model/store/store.dart';
 import 'package:e_pos/data/services/store_service.dart';
 

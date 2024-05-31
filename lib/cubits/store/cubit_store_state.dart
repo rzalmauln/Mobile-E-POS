@@ -23,7 +23,7 @@ class LoadedCubitState extends StoreCubitState {
 }
 
 class ErrorCubitState extends StoreCubitState {
-  String errorMessage;
+  final String errorMessage;
   ErrorCubitState(this.errorMessage);
   @override
   List<Object> get props => [errorMessage];

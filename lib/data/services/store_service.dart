@@ -1,9 +1,32 @@
-import 'package:sqflite/sqflite.dart';
 import '../model/store/store.dart';
 import '../helper/database_helper.dart';
 
 class StoreService {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
+
+  Future<Store> login(String username, String password) async {
+    final db = await _databaseHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'stores',
+      where: 'username = ? AND password = ?',
+      whereArgs: [username, password],
+    );
+    if (maps.isNotEmpty) {
+      return Store.fromJson(maps.first);
+    } else {
+      throw Exception('Login failed: Invalid username or password');
+    }
+  }
+
+  Future<Store> register(String name, String username, String password) async {
+    final db = await _databaseHelper.database;
+    final int id = await db.insert('stores', {
+      'name': name,
+      'username': username,
+      'password': password,
+    });
+    return Store(id: id, name: name, username: username, password: password);
+  }
 
   Future<void> insertStore(Store store) async {
     final db = await _databaseHelper.database;

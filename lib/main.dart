@@ -1,6 +1,9 @@
 import 'package:e_pos/core/app_theme_data.dart';
-import 'package:e_pos/cubit/store/cubit_store.dart';
+import 'package:e_pos/cubits/login/login_cubit.dart';
+import 'package:e_pos/cubits/register/register_cubit.dart';
+import 'package:e_pos/cubits/store/cubit_store.dart';
 import 'package:e_pos/injection_container.dart';
+import 'package:e_pos/views/login_register/login_screen.dart';
 import 'package:e_pos/views/pin/pin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +31,8 @@ class MainApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => sl<StoreCubit>()),
+            BlocProvider(create: (context) => sl<LoginCubit>()),
+            BlocProvider(create: (context) => sl<RegisterCubit>()),
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -44,7 +49,26 @@ class MainApp extends StatelessWidget {
                       body: Center(child: Text('Error: ${snapshot.error}')),
                     );
                   } else {
-                    return PinScreen(isCreatingPin: snapshot.data!);
+                    FutureBuilder<bool>(
+                      future: _checkFirstLoginUser(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Scaffold(
+                            body: Center(child: CircularProgressIndicator()),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Scaffold(
+                            body:
+                                Center(child: Text('Error: ${snapshot.error}')),
+                          );
+                        } else {
+                          return const LoginScreen();
+                        }
+                      },
+                    );
+                    // return PinScreen(isCreatingPin: snapshot.data!);
+                    return LoginScreen();
                   }
                 },
               )),
@@ -56,5 +80,10 @@ class MainApp extends StatelessWidget {
   Future<bool> _checkFirstTimeUser() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('userpin') == null;
+  }
+
+  Future<bool> _checkFirstLoginUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    return (prefs.getString('userLogin') == null);
   }
 }

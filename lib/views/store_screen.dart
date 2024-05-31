@@ -1,5 +1,5 @@
-import 'package:e_pos/cubit/store/cubit_store.dart';
-import 'package:e_pos/cubit/store/cubit_store_state.dart';
+import 'package:e_pos/cubits/store/cubit_store.dart';
+import 'package:e_pos/cubits/store/cubit_store_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,10 +17,9 @@ class StoreScreen extends StatelessWidget {
         title: const Text('Store'),
       ),
       body: BlocBuilder<StoreCubit, StoreCubitState>(builder: (_, state) {
-        refreshIdeas(context);
         if (state is LoadingCubitState) {
-          return Center(
-            child: const Text("gagal"),
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         } else if (state is ErrorCubitState) {
           return Center(
