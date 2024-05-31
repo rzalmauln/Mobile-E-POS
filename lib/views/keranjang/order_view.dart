@@ -1,4 +1,5 @@
 import 'package:e_pos/data/model/order_detail/order_detail.dart';
+import 'package:e_pos/views/keranjang/increment_decrement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,6 +12,34 @@ class OrderView extends StatefulWidget {
 }
 
 class _OrderViewState extends State<OrderView> {
+  // int quantity = 0;
+  final stock = [
+    {
+      "title": "Sabun mandi",
+      "qty": 20,
+      "price": 8000,
+    },
+    {
+      "title": "Shampoo",
+      "qty": 10,
+      "price": 10000,
+    },
+    {
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
+    },
+    {
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
+    },
+    {
+      "title": "Pasta Gigi",
+      "qty": 15,
+      "price": 5000,
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,9 +138,11 @@ class _OrderViewState extends State<OrderView> {
           SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: stock.length,
               itemBuilder: (context, index) {
-                return _buildCard("Sabun", 20, 8000);
+                var item = stock[index];
+                return _buildCard(item['title'].toString(),
+                    item['qty'] as int, item['price'] as int,index);
               },
             ),
           ),
@@ -210,7 +241,10 @@ class _OrderViewState extends State<OrderView> {
     );
   }
 
-  Widget _buildCard(String title, int qty, int price) {
+  Widget _buildCard(String title, int qty, int price, int index) {
+    // var item = stock[index];
+    TextEditingController qtyController = TextEditingController(text: qty.toString());
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
       child: Container(
@@ -224,9 +258,7 @@ class _OrderViewState extends State<OrderView> {
             width: 1,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+        child:
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,23 +266,26 @@ class _OrderViewState extends State<OrderView> {
                 Text(title,
                     style:
                     TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Text(
-                  "${qty} x ${price}",
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${qty} x ${price}",
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.bold),
+                    ),
+                    IncrementDecrement(controller: qtyController,value: qty,),
+                  ],
                 ),
                 Text(
                   "Rp${(qty * price).toString()}",
                   style: TextStyle(fontSize: 11, color: Colors.blue[600]),
                 ),
               ],
-            ),
-            // CustomNumberInputWithIncrementDecrement(value: 3, )
-          ],
-        ),
       ),
+    )
     );
   }
 
