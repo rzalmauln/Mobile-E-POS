@@ -49,7 +49,6 @@ class MainApp extends StatelessWidget {
                       body: Center(child: Text('Error: ${snapshot.error}')),
                     );
                   } else {
-                    print(snapshot.data);
                     if (snapshot.data == true) {
                       // User has already logged in and created PIN
                       return const PinScreen(isCreatingPin: false);
