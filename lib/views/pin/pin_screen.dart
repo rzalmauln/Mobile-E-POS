@@ -1,6 +1,6 @@
 import 'package:e_pos/core/color_values.dart';
+import 'package:e_pos/views/home/home_screen.dart';
 import 'package:e_pos/views/pin/widgets/pin_digit.dart';
-import 'package:e_pos/views/store_screen.dart';
 import 'package:e_pos/widgets/basic_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,7 +67,7 @@ class _PinScreenState extends State<PinScreen> {
           await prefs.setString('userPinCreated', _inputText);
           Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const StoreScreen()));
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         } else {
           _clearPinDigit('Pin Salah');
         }
@@ -78,7 +78,7 @@ class _PinScreenState extends State<PinScreen> {
       if (_inputText == savedPin) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const StoreScreen()));
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
       } else {
         _clearPinDigit('Pin Salah');
       }
