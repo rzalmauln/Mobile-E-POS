@@ -10,7 +10,6 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       emit(LoadingLoginState());
       Store user = await StoreService().login(username, password);
-      print(user);
       emit(LoadedLoginState(user));
     } catch (e) {
       emit(ErrorLoginState(e.toString()));

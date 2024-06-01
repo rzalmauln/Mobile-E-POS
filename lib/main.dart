@@ -38,7 +38,7 @@ class MainApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: AppThemeData.getTheme(context),
               home: FutureBuilder<bool>(
-                future: _checkFirstTimeUser(),
+                future: _checkUserStatus(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Scaffold(
@@ -49,26 +49,14 @@ class MainApp extends StatelessWidget {
                       body: Center(child: Text('Error: ${snapshot.error}')),
                     );
                   } else {
-                    FutureBuilder<bool>(
-                      future: _checkFirstLoginUser(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Scaffold(
-                            body: Center(child: CircularProgressIndicator()),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Scaffold(
-                            body:
-                                Center(child: Text('Error: ${snapshot.error}')),
-                          );
-                        } else {
-                          return const LoginScreen();
-                        }
-                      },
-                    );
-                    // return PinScreen(isCreatingPin: snapshot.data!);
-                    return LoginScreen();
+                    print(snapshot.data);
+                    if (snapshot.data == true) {
+                      // User has already logged in and created PIN
+                      return const PinScreen(isCreatingPin: false);
+                    } else {
+                      // User has not logged in or created PIN
+                      return const LoginScreen();
+                    }
                   }
                 },
               )),
@@ -77,13 +65,11 @@ class MainApp extends StatelessWidget {
     );
   }
 
-  Future<bool> _checkFirstTimeUser() async {
+  Future<bool> _checkUserStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userpin') == null;
-  }
+    final hasLoggedIn = prefs.getBool('userLogin') ?? false;
+    final hasCreatedPin = prefs.getString('userPinCreated') ?? "";
 
-  Future<bool> _checkFirstLoginUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    return (prefs.getString('userLogin') == null);
+    return hasLoggedIn && hasCreatedPin != "";
   }
 }

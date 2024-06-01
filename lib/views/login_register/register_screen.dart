@@ -1,4 +1,5 @@
 import 'package:e_pos/cubits/register/register_cubit.dart';
+import 'package:e_pos/cubits/register/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './login_screen.dart';
@@ -25,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: const Color(0xFF2563EB),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        // toolbarHeight: 76,
         title: const Text(
           "Jaya Makmur POS",
           style: TextStyle(
@@ -39,168 +39,216 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height - 110, //126
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 20,
-                    ),
-                    const Center(
-                      child: Text(
-                        "Selamat Datang!",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 28,
-                        ),
+          child: BlocConsumer<RegisterCubit, RegisterState>(
+            listener: (context, state) {
+              if (state is ErrorRegisterState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Register Error'),
+                    content: Text(state.errorMessage),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('OK'),
                       ),
-                    ),
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "Silahkan isi nama bisnis anda terlebih dahulu",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF64748B),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 20,
-                    ),
-                    _buildTextFormField(
-                      label: "Nama Bisnis(toko, cafe, dll)",
-                      hintText: "cth: Razol Berkah Makmur",
-                      controller: _namaBisnisController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Nama bisnis tidak boleh kosong";
-                        }
-                        return null;
-                      },
-                    ),
-                    _buildTextFormField(
-                      label: "Username",
-                      hintText: "cht: razolmakmur",
-                      controller: _usernameController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Username tidak boleh kosong";
-                        } else if (!RegExp(r'^[a-zA-Z0-9_]+$')
-                            .hasMatch(value)) {
-                          return "Username hanya boleh mengandung huruf, angka, dan underscore";
-                        }
-                        return null;
-                      },
-                    ),
-                    _buildTextFormField(
-                      label: "Password",
-                      hintText: "Kata sandi 8 karakter",
-                      obscureText: true,
-                      controller: _passwordController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password tidak boleh kosong";
-                        } else if (value.length < 8) {
-                          return "Password harus terdiri dari minimal 8 karakter";
-                        }
-                        return null;
-                      },
-                    ),
-                    _buildTextFormField(
-                      label: "Konfirmasi Password",
-                      hintText: "Konfirmasi kata sandi",
-                      obscureText: true,
-                      controller: _konfirmasiPasswordController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Konfirmasi password tidak boleh kosong";
-                        } else if (value != _passwordController.text) {
-                          return "Konfirmasi password tidak sesuai";
-                        }
-                        return null;
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Sudah pernah menggunakan aplikasi? ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF2563EB)),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ));
-                            },
-                            child: const Text(
-                              "Klik disini",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF2563EB)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 49,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: FilledButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        String username = _usernameController.text;
-                        String name = _namaBisnisController.text;
-                        String password = _passwordController.text;
-                        context
-                            .read<RegisterCubit>()
-                            .register(username, name, password);
-                        Navigator.push(
+                    ],
+                  ),
+                );
+              }
+
+              if (state is LoadedRegisterState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Register Successful'),
+                    content: Text(
+                        '${state.user.name} registration completed successfully!'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LoginScreen(),
-                            ));
-                      }
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                            ),
+                          );
+                        },
+                        child: const Text('OK'),
                       ),
-                      backgroundColor:
-                          const MaterialStatePropertyAll(Color(0xFF2563EB)),
-                    ),
-                    child: const Text(
-                      "Selanjutnya",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    ],
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is LoadingRegisterState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 20,
+                        ),
+                        const Center(
+                          child: Text(
+                            "Selamat Datang!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28,
+                            ),
+                          ),
+                        ),
+                        const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "Silahkan isi nama bisnis anda terlebih dahulu",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF64748B),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 20,
+                        ),
+                        _buildTextFormField(
+                          label: "Nama Bisnis(toko, cafe, dll)",
+                          hintText: "cth: Razol Berkah Makmur",
+                          controller: _namaBisnisController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Nama bisnis tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+                        _buildTextFormField(
+                          label: "Username",
+                          hintText: "cht: razolmakmur",
+                          controller: _usernameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Username tidak boleh kosong";
+                            } else if (!RegExp(r'^[a-zA-Z0-9_]+$')
+                                .hasMatch(value)) {
+                              return "Username hanya boleh mengandung huruf, angka, dan underscore";
+                            }
+                            return null;
+                          },
+                        ),
+                        _buildTextFormField(
+                          label: "Password",
+                          hintText: "Kata sandi 8 karakter",
+                          obscureText: true,
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password tidak boleh kosong";
+                            } else if (value.length < 8) {
+                              return "Password harus terdiri dari minimal 8 karakter";
+                            }
+                            return null;
+                          },
+                        ),
+                        _buildTextFormField(
+                          label: "Konfirmasi Password",
+                          hintText: "Konfirmasi kata sandi",
+                          obscureText: true,
+                          controller: _konfirmasiPasswordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Konfirmasi password tidak boleh kosong";
+                            } else if (value != _passwordController.text) {
+                              return "Konfirmasi password tidak sesuai";
+                            }
+                            return null;
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Sudah pernah menggunakan aplikasi? ",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF2563EB)),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "Klik disini",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF2563EB)),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              )
-            ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 49,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            String username = _usernameController.text;
+                            String name = _namaBisnisController.text;
+                            String password = _passwordController.text;
+                            context
+                                .read<RegisterCubit>()
+                                .register(username, name, password);
+                          }
+                        },
+                        style: ButtonStyle(
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          backgroundColor:
+                              const MaterialStatePropertyAll(Color(0xFF2563EB)),
+                        ),
+                        child: const Text(
+                          "Selanjutnya",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -216,12 +264,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Widget _buildTextFormField(
-      {required String label,
-      required String hintText,
-      bool obscureText = false,
-      required TextEditingController controller,
-      String? Function(String? value)? validator}) {
+  Widget _buildTextFormField({
+    required String label,
+    required String hintText,
+    bool obscureText = false,
+    required TextEditingController controller,
+    String? Function(String? value)? validator,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -270,7 +319,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         const SizedBox(
           height: 20,
-        )
+        ),
       ],
     );
   }

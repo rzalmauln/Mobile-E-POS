@@ -20,12 +20,16 @@ class StoreService {
 
   Future<Store> register(String name, String username, String password) async {
     final db = await _databaseHelper.database;
-    final int id = await db.insert('stores', {
-      'name': name,
-      'username': username,
-      'password': password,
-    });
-    return Store(id: id, name: name, username: username, password: password);
+    try {
+      final int id = await db.insert('stores', {
+        'name': name,
+        'username': username,
+        'password': password,
+      });
+      return Store(id: id, name: name, username: username, password: password);
+    } catch (e) {
+      throw Exception('Register failed: ${e.toString()}');
+    }
   }
 
   Future<void> insertStore(Store store) async {

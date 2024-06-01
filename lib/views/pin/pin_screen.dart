@@ -64,8 +64,8 @@ class _PinScreenState extends State<PinScreen> {
         _clearPinDigit();
       } else {
         if (_firstPin == _inputText) {
-          await prefs.setString('userpin', _inputText);
-
+          await prefs.setString('userPinCreated', _inputText);
+          Navigator.popUntil(context, (route) => route.isFirst);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const StoreScreen()));
         } else {
@@ -73,9 +73,10 @@ class _PinScreenState extends State<PinScreen> {
         }
       }
     } else {
-      final savedPin = prefs.getString('userpin');
+      final savedPin = prefs.getString('userPinCreated');
 
       if (_inputText == savedPin) {
+        Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const StoreScreen()));
       } else {

@@ -6,26 +6,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
 
-  void refreshIdeas(BuildContext context) {
-    context.read<StoreCubit>().loadStores();
-  }
-
   @override
   Widget build(BuildContext context) {
+    context.read<StoreCubit>().loadStores();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Store'),
       ),
-      body: BlocBuilder<StoreCubit, StoreCubitState>(builder: (_, state) {
+      body:
+          BlocConsumer<StoreCubit, StoreCubitState>(listener: (context, state) {
+        if (state is ErrorCubitState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage),
+            ),
+          );
+        }
+      }, builder: (_, state) {
         if (state is LoadingCubitState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ErrorCubitState) {
-          return Center(
-            child: Text(state.errorMessage),
-          );
-        } else if (state is LoadedCubitState) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is LoadedCubitState) {
           var stores = state.store;
           if (stores!.isEmpty) {
             return const Center(child: Text('No Data'));
@@ -69,7 +70,7 @@ class StoreScreen extends StatelessWidget {
             },
           );
         } else {
-          return Container();
+          return const Center(child: Text('No Data'));
         }
       }),
     );
