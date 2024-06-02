@@ -78,7 +78,7 @@ class AppThemeData {
           bodySmall: GoogleFonts.plusJakartaSans(fontSize: 11),
           titleLarge: GoogleFonts.plusJakartaSans(
             fontSize: 34,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             letterSpacing: -0.08,
           ),
           labelLarge: GoogleFonts.plusJakartaSans(

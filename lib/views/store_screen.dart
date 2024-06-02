@@ -49,11 +49,11 @@ class StoreScreen extends StatelessWidget {
                       ),
                       Text(
                         storeData.username,
-                        style: Theme.of(context).textTheme.caption,
+                        // style: Theme.of(context).textTheme.caption,
                       ),
                       Text(
                         storeData.password,
-                        style: Theme.of(context).textTheme.caption,
+                        // style: Theme.of(context).textTheme.caption,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
