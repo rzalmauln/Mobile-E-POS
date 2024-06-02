@@ -25,9 +25,6 @@ mixin _$Product {
   String get description => throw _privateConstructorUsedError;
   int get stock => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
-  int get categoryId => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,15 +36,7 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      String description,
-      int stock,
-      int price,
-      int categoryId,
-      DateTime createdAt,
-      DateTime updatedAt});
+  $Res call({int id, String name, String description, int stock, int price});
 }
 
 /// @nodoc
@@ -68,9 +57,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? description = null,
     Object? stock = null,
     Object? price = null,
-    Object? categoryId = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -93,18 +79,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ) as $Val);
   }
 }
@@ -116,15 +90,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      String description,
-      int stock,
-      int price,
-      int categoryId,
-      DateTime createdAt,
-      DateTime updatedAt});
+  $Res call({int id, String name, String description, int stock, int price});
 }
 
 /// @nodoc
@@ -143,9 +109,6 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? description = null,
     Object? stock = null,
     Object? price = null,
-    Object? categoryId = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
   }) {
     return _then(_$ProductImpl(
       id: null == id
@@ -168,18 +131,6 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as int,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -193,10 +144,7 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
       required this.name,
       required this.description,
       required this.stock,
-      required this.price,
-      required this.categoryId,
-      required this.createdAt,
-      required this.updatedAt});
+      required this.price});
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductImplFromJson(json);
@@ -211,16 +159,10 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
   final int stock;
   @override
   final int price;
-  @override
-  final int categoryId;
-  @override
-  final DateTime createdAt;
-  @override
-  final DateTime updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Product(id: $id, name: $name, description: $description, stock: $stock, price: $price, categoryId: $categoryId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Product(id: $id, name: $name, description: $description, stock: $stock, price: $price)';
   }
 
   @override
@@ -232,10 +174,7 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('stock', stock))
-      ..add(DiagnosticsProperty('price', price))
-      ..add(DiagnosticsProperty('categoryId', categoryId))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt));
+      ..add(DiagnosticsProperty('price', price));
   }
 
   @override
@@ -248,19 +187,13 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.stock, stock) || other.stock == stock) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            (identical(other.price, price) || other.price == price));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, description, stock,
-      price, categoryId, createdAt, updatedAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, description, stock, price);
 
   @JsonKey(ignore: true)
   @override
@@ -282,10 +215,7 @@ abstract class _Product implements Product {
       required final String name,
       required final String description,
       required final int stock,
-      required final int price,
-      required final int categoryId,
-      required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$ProductImpl;
+      required final int price}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
@@ -299,12 +229,6 @@ abstract class _Product implements Product {
   int get stock;
   @override
   int get price;
-  @override
-  int get categoryId;
-  @override
-  DateTime get createdAt;
-  @override
-  DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
