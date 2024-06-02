@@ -1,7 +1,8 @@
 import 'package:e_pos/core/app_theme_data.dart';
 import 'package:e_pos/cubits/login/login_cubit.dart';
+import 'package:e_pos/cubits/product/product_cubit.dart';
 import 'package:e_pos/cubits/register/register_cubit.dart';
-import 'package:e_pos/cubits/store/cubit_store.dart';
+import 'package:e_pos/cubits/store/store_cubit.dart';
 import 'package:e_pos/injection_container.dart';
 import 'package:e_pos/views/login_register/login_screen.dart';
 import 'package:e_pos/views/pin/pin_screen.dart';
@@ -33,6 +34,7 @@ class MainApp extends StatelessWidget {
             BlocProvider(create: (context) => sl<StoreCubit>()),
             BlocProvider(create: (context) => sl<LoginCubit>()),
             BlocProvider(create: (context) => sl<RegisterCubit>()),
+            BlocProvider(create: (context) => sl<ProductCubit>())
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,

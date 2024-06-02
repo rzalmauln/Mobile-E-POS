@@ -10,7 +10,6 @@ class Product with _$Product {
   const factory Product({
     required int id,
     required String name,
-    required String description,
     required int stock,
     required int price,
   }) = _Product;

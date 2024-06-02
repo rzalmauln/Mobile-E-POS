@@ -4,9 +4,14 @@ import '../helper/database_helper.dart';
 class ProductService {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
 
-  Future<void> insertProduct(Product product) async {
+  Future<void> insertProduct(String name, int stock, int price) async {
     final db = await _databaseHelper.database;
-    await db.insert('product', product.toJson());
+    try {
+      await db
+          .insert('product', {'name': name, 'stock': stock, 'price': price});
+    } catch (e) {
+      throw Exception('Register failed: ${e.toString()}');
+    }
   }
 
   Future<List<Product>> getProducts() async {
