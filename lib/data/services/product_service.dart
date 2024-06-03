@@ -8,7 +8,7 @@ class ProductService {
     final db = await _databaseHelper.database;
     try {
       await db
-          .insert('product', {'name': name, 'stock': stock, 'price': price});
+          .insert('products', {'name': name, 'stock': stock, 'price': price});
     } catch (e) {
       throw Exception('Register failed: ${e.toString()}');
     }
@@ -16,7 +16,7 @@ class ProductService {
 
   Future<List<Product>> getProducts() async {
     final db = await _databaseHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('product');
+    final List<Map<String, dynamic>> maps = await db.query('products');
 
     return List.generate(maps.length, (i) {
       return Product.fromJson(maps[i]);
@@ -26,14 +26,14 @@ class ProductService {
   Future<Product> getProduct(int id) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps =
-        await db.query('product', where: 'id = ?', whereArgs: [id]);
+        await db.query('products', where: 'id = ?', whereArgs: [id]);
     return Product.fromJson(maps.first);
   }
 
   Future<void> updateProduct(Product product) async {
     final db = await _databaseHelper.database;
     await db.update(
-      'product',
+      'products',
       product.toJson(),
       where: 'id = ?',
       whereArgs: [product.id],
@@ -43,7 +43,7 @@ class ProductService {
   Future<void> deleteProduct(int id) async {
     final db = await _databaseHelper.database;
     await db.delete(
-      'product',
+      'products',
       where: 'id = ?',
       whereArgs: [id],
     );

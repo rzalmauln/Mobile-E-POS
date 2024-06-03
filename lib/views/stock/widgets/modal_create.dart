@@ -1,4 +1,5 @@
 import 'package:e_pos/cubits/product/product_cubit.dart';
+import 'package:e_pos/data/model/product/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,12 +27,15 @@ class _ModalCreateStockState extends State<ModalCreateStock> {
   TextEditingController stockController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
+
   @override
   void initState() {
     super.initState();
+    final int stock = widget.stock ?? 0;
+    final int price = widget.price ?? 0;
     nameController = TextEditingController(text: widget.name);
-    stockController = TextEditingController(text: widget.stock.toString());
-    priceController = TextEditingController(text: widget.price.toString());
+    stockController = TextEditingController(text: stock.toString());
+    priceController = TextEditingController(text: price.toString());
   }
 
   @override
@@ -190,10 +194,19 @@ class _ModalCreateStockState extends State<ModalCreateStock> {
                       child: GestureDetector(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
-                            if (widget.isEdit!) {
+                            if (widget.isEdit == true) {
+                              Product product = Product(
+                                  id: widget.idProduct!,
+                                  name: nameController.text.toString(),
+                                  stock: int.tryParse(stockController.text)!,
+                                  price: int.tryParse(priceController.text)!);
+                              context.read<ProductCubit>().updateProduct(product);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Produk Teredit'), duration: Duration(seconds: 2),)
+                              );
                             } else {
                               context.read<ProductCubit>().addProduct(
-                                  nameController.toString(),
+                                  nameController.text.toString(),
                                   int.tryParse(stockController.text)!,
                                   int.tryParse(priceController.text)!);
                               ScaffoldMessenger.of(context).showSnackBar(

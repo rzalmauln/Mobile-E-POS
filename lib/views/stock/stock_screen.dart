@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sizer/sizer.dart';
 
 class StockScreen extends StatefulWidget {
   const StockScreen({super.key});
@@ -151,7 +152,7 @@ class _StockScreenState extends State<StockScreen> {
                       itemBuilder: (context, index) {
                         var product = products[index];
                         return _buildCard(
-                            product.name, product.stock, product.price);
+                            product.name, product.stock, product.price, product.id);
                       },
                     );
                   }
@@ -173,7 +174,7 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  Widget _buildCard(String title, int qty, int price) {
+  Widget _buildCard(String title, int qty, int price, int id) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
@@ -194,9 +195,15 @@ class _StockScreenState extends State<StockScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  width: 50.w,
+                  child: Text(title,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.clip,
+                  ),
+                ),
                 Text(
                   "Stock : ${qty}",
                   style: TextStyle(
@@ -220,15 +227,14 @@ class _StockScreenState extends State<StockScreen> {
                 IconButton(
                   icon: Icon(Icons.edit_outlined, color: Colors.yellow[500]),
                   onPressed: () {
-                    _showEditDialog(stock
-                        .indexWhere((element) => element['title'] == title));
+                    _showEditDialog(id, title, qty, price);
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.delete_outline_rounded,
                       color: Colors.red[500]),
                   onPressed: () {
-                    _setAlertDelete(context, title);
+                    _setAlertDelete(context, title, id);
                   },
                 ),
               ],
@@ -251,13 +257,17 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  void _showEditDialog(int index) {
+  void _showEditDialog(int id, String name, int stock, int price) {
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return const ModalCreateStock(
+        return ModalCreateStock(
           isEdit: true,
+          idProduct: id,
+          name: name,
+          stock: stock,
+          price: price,
         );
       },
     );
@@ -297,7 +307,7 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  Future<bool> _setAlertDelete(BuildContext context, String title) async {
+  Future<bool> _setAlertDelete(BuildContext context, String title, int id) async {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -350,16 +360,14 @@ class _StockScreenState extends State<StockScreen> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    setState(() {
-                      stock.removeWhere((element) => element['title'] == title);
-                      Navigator.of(context).pop(true);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Item Berhasil Dihapus'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    });
+                    context.read<ProductCubit>().deleteProduct(id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Berhasil menghapus $title'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    Navigator.pop(context);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
