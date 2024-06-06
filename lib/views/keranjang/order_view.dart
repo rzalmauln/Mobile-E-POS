@@ -13,6 +13,7 @@ import 'package:e_pos/data/model/order_detail/order_detail.dart';
 import 'package:e_pos/data/model/product/product.dart';
 import 'package:e_pos/views/keranjang/increment_decrement.dart';
 import 'package:e_pos/views/keranjang/widgets/custom_field.dart';
+import 'package:e_pos/views/transaksi/detail_transaksi_screen.dart';
 import 'package:e_pos/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,7 @@ class _OrderViewState extends State<OrderView> {
           child: Icon(Icons.arrow_back, color: Colors.white),
           onTap: () {
             Navigator.pop(context);
+            context.read<ProductCubit>().loadProducts();
           },
         ),
         backgroundColor: Colors.blueAccent,
@@ -227,7 +229,7 @@ class _OrderViewState extends State<OrderView> {
                             }
 
                             if (idOrder != 0) {
-                              _setAlert(context);
+                              _setAlert(context, idOrder);
                             }
                           },
                           icon: Icon(Icons.arrow_forward),
@@ -355,7 +357,7 @@ class _OrderViewState extends State<OrderView> {
         ));
   }
 
-  void _setAlert(BuildContext context) async {
+  void _setAlert(BuildContext context, int idOrder) async {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -382,7 +384,14 @@ class _OrderViewState extends State<OrderView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetailTransaksiScreen(idTransaksi: idOrder)));
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   padding: EdgeInsets.all(10),
@@ -480,6 +489,9 @@ class _OrderViewState extends State<OrderView> {
                     context.read<CartCubit>().clearCart();
 
                     Navigator.pop(context);
+                    Navigator.pop(context);
+
+                    context.read<ProductCubit>().loadProducts();
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5),

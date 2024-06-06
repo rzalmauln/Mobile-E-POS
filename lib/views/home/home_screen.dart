@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Scaffold(
             drawer: const NavigatorDrawer(),
             appBar: AppBar(
-              backgroundColor: const Color(0xffb2563eb),
+              backgroundColor: Colors.blue[600],
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -79,14 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 18),
-                    child: CustomTextField(
-                      controller: _controller,
-                      hintText: 'Cari Produk',
-                      suffixIcon: SvgPicture.asset(
-                          'assets/icons/search-normal.svg',
-                          colorFilter: const ColorFilter.mode(
-                              Colors.grey, BlendMode.srcIn)),
-                    ),
+                    // child: CustomTextField(
+                    //   controller: _controller,
+                    //   hintText: 'Cari Produk',
+                    //   suffixIcon: SvgPicture.asset(
+                    //       'assets/icons/search-normal.svg',
+                    //       colorFilter: const ColorFilter.mode(
+                    //           Colors.grey, BlendMode.srcIn)),
+                    // ),
                   ),
                   Container(
                     color: Colors.grey[100],
@@ -119,9 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: products.length,
                             itemBuilder: (context, index) {
                               var product = products[index];
-                              return product.stock != 0
-                                  ? _buildCard(product, context)
-                                  : Container();
+                              return _buildCard(product, context);
                             },
                           );
                         }
@@ -216,12 +214,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 32,
                         width: 32,
                         decoration: BoxDecoration(
-                          color: Colors.blue[600],
+                          color: cartItem.quantity > 0
+                              ? Colors.blue[600]
+                              : Colors.grey[300],
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Icon(
                           Icons.remove,
-                          color: Colors.white,
+                          color: cartItem.quantity > 0
+                              ? Colors.white
+                              : Colors.grey[500],
                         ),
                       ),
                     ),
@@ -242,12 +244,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 32,
                         width: 32,
                         decoration: BoxDecoration(
-                          color: Colors.blue[600],
+                          color: cartItem.quantity < cartItem.product.stock
+                              ? Colors.blue[600]
+                              : Colors.grey[300],
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Icon(
                           Icons.add,
-                          color: Colors.white,
+                          color: cartItem.quantity < cartItem.product.stock
+                              ? Colors.white
+                              : Colors.grey[500],
                         ),
                       ),
                     ),
@@ -265,39 +271,67 @@ class _HomeScreenState extends State<HomeScreen> {
 class MyBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: Colors.blue,
-      child: BlocBuilder<CartCubit, CartState>(
-        builder: (context, state) {
-          return Container(
-            height: 60.0,
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Keranjang:\n${context.read<CartCubit>().getAllQuantity().toString()} Produk',
-                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
+        return BottomAppBar(
+          color: context.read<CartCubit>().getAllQuantity() == 0
+              ? Colors.grey[300]
+              : Colors.blue[600],
+          child: BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              return Container(
+                height: 120.0,
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Keranjang:\n${context.read<CartCubit>().getAllQuantity().toString()} Produk',
+                      style: TextStyle(
+                          color: context.read<CartCubit>().getAllQuantity() == 0
+                              ? Colors.grey[400]
+                              : Colors.white,
+                          fontSize: 16.0),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Rp. ${context.read<CartCubit>().getTotalPrice().toString()}',
+                          style: TextStyle(
+                              color:
+                                  context.read<CartCubit>().getAllQuantity() ==
+                                          0
+                                      ? Colors.grey[400]
+                                      : Colors.white,
+                              fontSize: 16.0),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward,
+                            color:
+                                context.read<CartCubit>().getAllQuantity() == 0
+                                    ? Colors.grey[400]
+                                    : Colors.white,
+                          ),
+                          onPressed: () {
+                            context.read<CartCubit>().getAllQuantity() == 0
+                                ? context
+                                : Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const OrderView(),
+                                    ));
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Text(
-                  'Rp. ${context.read<CartCubit>().getTotalPrice().toString()}',
-                  style: TextStyle(color: Colors.white, fontSize: 16.0),
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward, color: Colors.white),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OrderView(),
-                        ));
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

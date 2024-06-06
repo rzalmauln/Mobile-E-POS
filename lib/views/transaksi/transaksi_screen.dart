@@ -48,7 +48,6 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
                           child: _buildListItem(
                             context: context,
                             onTap: () {
-                              // GANTI FUNCTION ON TAP
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
