@@ -49,6 +49,7 @@ class StoreScreen extends StatelessWidget {
                       ),
                       Text(
                         storeData.username,
+
                       ),
                       Text(
                         storeData.password,

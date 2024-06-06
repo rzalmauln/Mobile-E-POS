@@ -1,6 +1,8 @@
 import 'package:e_pos/cubits/login/login_cubit.dart';
 import 'package:e_pos/cubits/login/login_state.dart';
 import 'package:e_pos/views/pin/pin_screen.dart';
+import 'package:e_pos/views/transaksi/detail_transaksi_screen.dart';
+import 'package:e_pos/views/transaksi/transaksi_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void check() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('userLogin', true);
+    prefs.setInt('idStore', 0);
+    prefs.setString('nameStore', "");
   }
 
   @override
@@ -70,7 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     content: const Text('Welcome to Jaya Makmur POS!'),
                     actions: [
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setInt('idStore', state.store.id);
+                          prefs.setString('nameStore', state.store.name);
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
@@ -93,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-              check();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

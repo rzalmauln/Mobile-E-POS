@@ -1,5 +1,8 @@
 import 'package:e_pos/core/app_theme_data.dart';
+import 'package:e_pos/cubits/cart/cart_cubit.dart';
 import 'package:e_pos/cubits/login/login_cubit.dart';
+import 'package:e_pos/cubits/order/order_cubit.dart';
+import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
 import 'package:e_pos/cubits/product/product_cubit.dart';
 import 'package:e_pos/cubits/register/register_cubit.dart';
 import 'package:e_pos/cubits/store/store_cubit.dart';
@@ -34,33 +37,37 @@ class MainApp extends StatelessWidget {
             BlocProvider(create: (context) => sl<StoreCubit>()),
             BlocProvider(create: (context) => sl<LoginCubit>()),
             BlocProvider(create: (context) => sl<RegisterCubit>()),
-            BlocProvider(create: (context) => sl<ProductCubit>())
+            BlocProvider(create: (context) => sl<ProductCubit>()),
+            BlocProvider(create: (context) => sl<CartCubit>()),
+            BlocProvider(create: (context) => sl<OrderCubit>()),
+            BlocProvider(create: (context) => sl<OrderDetailCubit>())
           ],
           child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: AppThemeData.getTheme(context),
-              home: FutureBuilder<bool>(
-                future: _checkUserStatus(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Scaffold(
-                      body: Center(child: Text('Error: ${snapshot.error}')),
-                    );
+            debugShowCheckedModeBanner: false,
+            theme: AppThemeData.getTheme(context),
+            home: FutureBuilder<bool>(
+              future: _checkUserStatus(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return Scaffold(
+                    body: Center(child: Text('Error: ${snapshot.error}')),
+                  );
+                } else {
+                  if (snapshot.data == true) {
+                    // User has already logged in and created PIN
+                    return const PinScreen(isCreatingPin: false);
                   } else {
-                    if (snapshot.data == true) {
-                      // User has already logged in and created PIN
-                      return const PinScreen(isCreatingPin: false);
-                    } else {
-                      // User has not logged in or created PIN
-                      return const LoginScreen();
-                    }
+                    // User has not logged in or created PIN
+                    return const LoginScreen();
                   }
-                },
-              )),
+                }
+              },
+            ),
+          ),
         );
       },
     );

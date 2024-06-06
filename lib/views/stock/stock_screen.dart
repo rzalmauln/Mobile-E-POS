@@ -25,6 +25,7 @@ class StockScreen extends StatefulWidget {
 
 class _StockScreenState extends State<StockScreen> {
 
+
   Future<void> _importCSV() async {
     try {
       CSVImporter importer = CSVImporter();
@@ -53,8 +54,11 @@ class _StockScreenState extends State<StockScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    context.read<ProductCubit>().loadProducts();
+
     return Scaffold(
       drawer: const NavigatorDrawer(),
       floatingActionButton: _buildActionButton(
@@ -85,6 +89,7 @@ class _StockScreenState extends State<StockScreen> {
                   }
                   if (state is LoadedProductState) {
                     var products = state.products;
+
                     return products.isEmpty
                         ? Center(
                           child: Column(
@@ -117,6 +122,7 @@ class _StockScreenState extends State<StockScreen> {
                             },)
                           ]
                         );
+
                   }
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.5,
@@ -223,10 +229,10 @@ class _StockScreenState extends State<StockScreen> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   width: 50.w,
-                  child: Text(title,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.clip,
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.clip,
                   ),
                 ),
                 Text(
@@ -332,8 +338,8 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  Future<bool> _setAlertDelete(BuildContext context, String title, int id) async {
-    return await showDialog(
+  void _setAlertDelete(BuildContext context, String title, int id) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
