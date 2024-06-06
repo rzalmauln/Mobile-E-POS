@@ -1,7 +1,9 @@
+import 'package:e_pos/cubits/drawer/drawer_cubit.dart';
 import 'package:e_pos/views/home/home_screen.dart';
 import 'package:e_pos/views/stock/stock_screen.dart';
 import 'package:e_pos/views/transaksi/transaksi_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,15 +16,17 @@ class NavigatorDrawer extends StatelessWidget {
       width: 290,
       shape: Border.all(strokeAlign: Checkbox.width),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _buildHeader(context),
-            const Divider(
-              color: Color(0xffCBD5E1),
-            ),
-            _buildMenuItems(context)
-          ],
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildHeader(context),
+              const Divider(
+                color: Color(0xffCBD5E1),
+              ),
+              _buildMenuItems(context)
+            ],
+          ),
         ),
       ),
     );
@@ -66,6 +70,8 @@ class NavigatorDrawer extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
+              context.read<DrawerCubit>().setDrawer(0);
+
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -77,14 +83,24 @@ class NavigatorDrawer extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  // SvgPicture.asset(""),
-                  Text(
-                    "Kasir",
-                    style: GoogleFonts.plusJakartaSans(
-                      textStyle: const TextStyle(
-                          color: Color(0xff3B82F6),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
+                  SvgPicture.asset('assets/icons/shop.svg',
+                      colorFilter: ColorFilter.mode(
+                          context.read<DrawerCubit>().getDrawer() == 0
+                              ? Color(0xff3B82F6)
+                              : Colors.grey,
+                          BlendMode.srcIn)),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      "Kasir",
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                            color: context.read<DrawerCubit>().getDrawer() == 0
+                                ? Color(0xff3B82F6)
+                                : Color(0xff64748B),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   )
                 ],
@@ -93,6 +109,7 @@ class NavigatorDrawer extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              context.read<DrawerCubit>().setDrawer(1);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -103,14 +120,24 @@ class NavigatorDrawer extends StatelessWidget {
               padding: const EdgeInsets.only(top: 30),
               child: Row(
                 children: [
-                  // SvgPicture.asset(""),
-                  Text(
-                    "Transaksi",
-                    style: GoogleFonts.plusJakartaSans(
-                      textStyle: const TextStyle(
-                          color: Color(0xff64748B),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
+                  SvgPicture.asset('assets/icons/receipt.svg',
+                      colorFilter: ColorFilter.mode(
+                          context.read<DrawerCubit>().getDrawer() == 1
+                              ? Color(0xff3B82F6)
+                              : Colors.grey,
+                          BlendMode.srcIn)),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      "Transaksi",
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                            color: context.read<DrawerCubit>().getDrawer() == 1
+                                ? Color(0xff3B82F6)
+                                : Color(0xff64748B),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   )
                 ],
@@ -121,21 +148,28 @@ class NavigatorDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(top: 30),
             child: Row(
               children: [
-                // SvgPicture.asset(""),
-                Text(
-                  "Laporan",
-                  style: GoogleFonts.plusJakartaSans(
-                    textStyle: const TextStyle(
-                        color: Color(0xff64748B),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
+                SvgPicture.asset('assets/icons/document-text.svg',
+                    colorFilter:
+                        const ColorFilter.mode(Colors.grey, BlendMode.srcIn)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    "Laporan",
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
+                          color: Color(0xff64748B),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
           GestureDetector(
             onTap: () {
+              context.read<DrawerCubit>().setDrawer(2);
+
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -146,14 +180,24 @@ class NavigatorDrawer extends StatelessWidget {
               padding: const EdgeInsets.only(top: 30),
               child: Row(
                 children: [
-                  // SvgPicture.asset(""),
-                  Text(
-                    "Stok & Inventori",
-                    style: GoogleFonts.plusJakartaSans(
-                      textStyle: const TextStyle(
-                          color: Color(0xff64748B),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
+                  SvgPicture.asset('assets/icons/box.svg',
+                      colorFilter: ColorFilter.mode(
+                          context.read<DrawerCubit>().getDrawer() == 2
+                              ? Color(0xff3B82F6)
+                              : Colors.grey,
+                          BlendMode.srcIn)),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      "Stok & Inventori",
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                            color: context.read<DrawerCubit>().getDrawer() == 2
+                                ? Color(0xff3B82F6)
+                                : Color(0xff64748B),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   )
                 ],
@@ -164,14 +208,19 @@ class NavigatorDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(top: 30),
             child: Row(
               children: [
-                // SvgPicture.asset(""),
-                Text(
-                  "Sinkronisasi Data",
-                  style: GoogleFonts.plusJakartaSans(
-                    textStyle: const TextStyle(
-                        color: Color(0xff64748B),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
+                SvgPicture.asset('assets/icons/shop.svg',
+                    colorFilter:
+                        const ColorFilter.mode(Colors.grey, BlendMode.srcIn)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    "Sinkronisasi Data",
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
+                          color: Color(0xff64748B),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 )
               ],

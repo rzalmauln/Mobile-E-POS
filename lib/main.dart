@@ -1,5 +1,6 @@
 import 'package:e_pos/core/app_theme_data.dart';
 import 'package:e_pos/cubits/cart/cart_cubit.dart';
+import 'package:e_pos/cubits/drawer/drawer_cubit.dart';
 import 'package:e_pos/cubits/login/login_cubit.dart';
 import 'package:e_pos/cubits/order/order_cubit.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
@@ -40,7 +41,8 @@ class MainApp extends StatelessWidget {
             BlocProvider(create: (context) => sl<ProductCubit>()),
             BlocProvider(create: (context) => sl<CartCubit>()),
             BlocProvider(create: (context) => sl<OrderCubit>()),
-            BlocProvider(create: (context) => sl<OrderDetailCubit>())
+            BlocProvider(create: (context) => sl<OrderDetailCubit>()),
+            BlocProvider(create: (context) => sl<DrawerCubit>()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 import 'package:e_pos/cubits/cart/cart_cubit.dart';
+import 'package:e_pos/cubits/drawer/drawer_cubit.dart';
 import 'package:e_pos/cubits/login/login_cubit.dart';
 import 'package:e_pos/cubits/order/order_cubit.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
@@ -23,7 +24,7 @@ Future<void> initializeDependecies() async {
   sl.registerLazySingleton(() => OrderDetailService());
   sl.registerFactory(() => StoreCubit(sl()));
   sl.registerFactory(() => ProductCubit(sl()));
-
+  sl.registerFactory(() => DrawerCubit());
   sl.registerFactory(() => CartCubit());
   sl.registerFactory(() => OrderCubit(sl(), sl()));
   sl.registerFactory(() => OrderDetailCubit(sl()));

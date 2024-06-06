@@ -35,16 +35,6 @@ class CartCubit extends Cubit<CartState> {
     emit(CartState(items: updatedItems, pay: last_pay));
   }
 
-  // void updateItemQuantity(int productId, int quantity) {
-  //   final updatedItems = state.items.map((item) {
-  //     if (item.product.id == productId) {
-  //       return item.copyWith(quantity: quantity);
-  //     }
-  //     return item;
-  //   }).toList();
-  //   emit(CartState(items: updatedItems));
-  // }
-
   void setCartFromProducts(List<Product> products) {
     int last_pay = state.pay;
 
