@@ -1,6 +1,8 @@
 import 'package:e_pos/cubits/login/login_cubit.dart';
 import 'package:e_pos/cubits/login/login_state.dart';
 import 'package:e_pos/views/pin/pin_screen.dart';
+import 'package:e_pos/views/transaksi/detail_transaksi_screen.dart';
+import 'package:e_pos/views/transaksi/transaksi_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

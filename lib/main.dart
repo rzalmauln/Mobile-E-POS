@@ -43,30 +43,31 @@ class MainApp extends StatelessWidget {
             BlocProvider(create: (context) => sl<OrderDetailCubit>())
           ],
           child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: AppThemeData.getTheme(context),
-              home: FutureBuilder<bool>(
-                future: _checkUserStatus(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Scaffold(
-                      body: Center(child: Text('Error: ${snapshot.error}')),
-                    );
+            debugShowCheckedModeBanner: false,
+            theme: AppThemeData.getTheme(context),
+            home: FutureBuilder<bool>(
+              future: _checkUserStatus(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return Scaffold(
+                    body: Center(child: Text('Error: ${snapshot.error}')),
+                  );
+                } else {
+                  if (snapshot.data == true) {
+                    // User has already logged in and created PIN
+                    return const PinScreen(isCreatingPin: false);
                   } else {
-                    if (snapshot.data == true) {
-                      // User has already logged in and created PIN
-                      return const PinScreen(isCreatingPin: false);
-                    } else {
-                      // User has not logged in or created PIN
-                      return const LoginScreen();
-                    }
+                    // User has not logged in or created PIN
+                    return const LoginScreen();
                   }
-                },
-              )),
+                }
+              },
+            ),
+          ),
         );
       },
     );
