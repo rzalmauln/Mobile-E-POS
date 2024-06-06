@@ -15,7 +15,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
-
 class StockScreen extends StatefulWidget {
   const StockScreen({super.key});
 
@@ -24,14 +23,12 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
-
-
   Future<void> _importCSV() async {
     try {
       CSVImporter importer = CSVImporter();
       String filePath = await importer.pickFile();
 
-      if(filePath.isEmpty) {
+      if (filePath.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: ColorValues.danger500,
           content: Text('Gagal mengimport data, mohon coba lagi'),
@@ -43,17 +40,18 @@ class _StockScreenState extends State<StockScreen> {
 
       print('CSV DATA: ${data}');
       Product object;
-      for(Map<String, dynamic> datas in data) {
+      for (Map<String, dynamic> datas in data) {
         object = Product.fromJson(datas);
         print('OBJECT: $object');
 
-        context.read<ProductCubit>().addProduct(object.name, object.stock, object.price);
+        context
+            .read<ProductCubit>()
+            .addProduct(object.name, object.stock, object.price);
       }
-    } catch(e) {
+    } catch (e) {
       print('Error importing: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +70,7 @@ class _StockScreenState extends State<StockScreen> {
       body: SingleChildScrollView(
           child: Container(
               color: Colors.grey[100],
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: BlocConsumer<ProductCubit, ProductState>(
                 listener: (context, state) {
                   if (state is ErrorProductState) {
@@ -92,37 +90,41 @@ class _StockScreenState extends State<StockScreen> {
 
                     return products.isEmpty
                         ? Center(
-                          child: Column(
-                            children: [
-                              _buildExportImportBtn(products),
-                              Text(
-                                "Inventori anda kosong",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  letterSpacing: -0.5,
-                                  fontWeight: FontWeight.bold,
+                            child: Column(
+                              children: [
+                                _buildExportImportBtn(products),
+                                Text(
+                                  "Inventori anda kosong",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    letterSpacing: -0.5,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
+                              ],
+                            ),
+                          )
+                        : Column(children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: _buildExportImportBtn(products),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 16),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: products.length,
+                                itemBuilder: (context, index) {
+                                  var product = products[index];
+                                  return _buildCard(product.name, product.stock,
+                                      product.price, product.id);
+                                },
                               ),
-                            ],
-                          ),
-                        )
-                        : Column(children:[
-                            _buildExportImportBtn(products),
-                            ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: products.length,
-                            itemBuilder: (context, index) {
-                              var product = products[index];
-                              return _buildCard(
-                                  product.name,
-                                  product.stock,
-                                  product.price,
-                                  product.id);
-                            },)
-                          ]
-                        );
-
+                            )
+                          ]);
                   }
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.5,
@@ -144,15 +146,16 @@ class _StockScreenState extends State<StockScreen> {
 
   Widget _buildExportImportBtn(List<Object> data) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
+      // padding: EdgeInsets.symmetric(horizontal: 16),
+      // margin: EdgeInsets.symmetric(vertical: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildActionButton(
             icon: Icons.file_upload_outlined,
             label: "Ekspor Data",
             onTap: () async {
-              if(data.isEmpty) {
+              if (data.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   backgroundColor: ColorValues.danger500,
                   content: Text('Gagal mengekspor data'),
@@ -163,7 +166,7 @@ class _StockScreenState extends State<StockScreen> {
               CSVExporter exporter = CSVExporter();
               try {
                 await exporter.exportToCSV('products', data);
-              } catch(e) {
+              } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   backgroundColor: ColorValues.danger500,
                   content: Text('Gagal mengekspor data, mohon coba lagi'),
