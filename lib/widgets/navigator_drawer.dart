@@ -1,3 +1,5 @@
+import 'package:e_pos/views/home/home_screen.dart';
+import 'package:e_pos/views/stock/stock_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,58 +28,91 @@ class NavigatorDrawer extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 38, bottom: 38, left: 30, right: 30),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Icon(Icons.account_box),
-        Text(
-          "Razol Berkah Makmur",
-          style: GoogleFonts.plusJakartaSans(
-            textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-          ),
-        ),
-      ]),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        padding:
+            const EdgeInsets.only(top: 38, bottom: 38, left: 30, right: 30),
+        child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Icon(Icons.account_box),
+              Text(
+                "Razol Berkah Makmur",
+                style: GoogleFonts.plusJakartaSans(
+                  textStyle: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ]),
+      ),
     );
   }
 
   _buildMenuItems(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 30),
+      padding: const EdgeInsets.only(left: 30),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                // SvgPicture.asset(""),
-                Text(
-                  "Kasir",
-                  style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        color: Color(0xff3B82F6),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
-                  ),
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // SvgPicture.asset(""),
+                  Text(
+                    "Kasir",
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
+                          color: Color(0xff3B82F6),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                // SvgPicture.asset(""),
-                Text(
-                  "Transaksi",
-                  style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        color: Color(0xff64748B),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
-                  ),
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StockScreen(),
+                  ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Row(
+                children: [
+                  // SvgPicture.asset(""),
+                  Text(
+                    "Transaksi",
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
+                          color: Color(0xff64748B),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Padding(
@@ -88,7 +123,7 @@ class NavigatorDrawer extends StatelessWidget {
                 Text(
                   "Laporan",
                   style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Color(0xff64748B),
                         fontSize: 17,
                         fontWeight: FontWeight.w600),
@@ -97,21 +132,30 @@ class NavigatorDrawer extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                // SvgPicture.asset(""),
-                Text(
-                  "Stok & Inventori",
-                  style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
-                        color: Color(0xff64748B),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
-                  ),
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StockScreen(),
+                  ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Row(
+                children: [
+                  // SvgPicture.asset(""),
+                  Text(
+                    "Stok & Inventori",
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
+                          color: Color(0xff64748B),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Padding(
@@ -122,7 +166,7 @@ class NavigatorDrawer extends StatelessWidget {
                 Text(
                   "Sinkronisasi Data",
                   style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         color: Color(0xff64748B),
                         fontSize: 17,
                         fontWeight: FontWeight.w600),

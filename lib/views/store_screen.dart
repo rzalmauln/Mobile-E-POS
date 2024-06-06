@@ -1,5 +1,5 @@
-import 'package:e_pos/cubits/store/cubit_store.dart';
-import 'package:e_pos/cubits/store/cubit_store_state.dart';
+import 'package:e_pos/cubits/store/store_cubit.dart';
+import 'package:e_pos/cubits/store/store_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +8,7 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<StoreCubit>().loadStores();
+    // context.read<StoreCubit>().loadStores();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Store'),
@@ -49,11 +49,10 @@ class StoreScreen extends StatelessWidget {
                       ),
                       Text(
                         storeData.username,
-                        // style: Theme.of(context).textTheme.caption,
+
                       ),
                       Text(
                         storeData.password,
-                        // style: Theme.of(context).textTheme.caption,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

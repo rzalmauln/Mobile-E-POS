@@ -1,5 +1,5 @@
 import 'package:e_pos/core/color_values.dart';
-import 'package:e_pos/cubits/store/cubit_store.dart';
+import 'package:e_pos/cubits/store/store_cubit.dart';
 import 'package:e_pos/widgets/custom_text_field.dart';
 import 'package:e_pos/widgets/navigator_drawer.dart';
 import 'package:flutter/material.dart';

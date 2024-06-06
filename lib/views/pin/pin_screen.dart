@@ -100,9 +100,10 @@ class _PinScreenState extends State<PinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('REBUILD');
     return Scaffold(
-        appBar: const BasicAppBar(),
+        appBar: const BasicAppBar(
+          title: "Jaya Makmur POS",
+        ),
         body: Column(
           children: [
             Expanded(

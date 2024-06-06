@@ -22,7 +22,6 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 mixin _$Product {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
   int get stock => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
 
@@ -36,7 +35,7 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
-  $Res call({int id, String name, String description, int stock, int price});
+  $Res call({int id, String name, int stock, int price});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? description = null,
     Object? stock = null,
     Object? price = null,
   }) {
@@ -66,10 +64,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
               as String,
       stock: null == stock
           ? _value.stock
@@ -90,7 +84,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String description, int stock, int price});
+  $Res call({int id, String name, int stock, int price});
 }
 
 /// @nodoc
@@ -106,7 +100,6 @@ class __$$ProductImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? description = null,
     Object? stock = null,
     Object? price = null,
   }) {
@@ -118,10 +111,6 @@ class __$$ProductImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
               as String,
       stock: null == stock
           ? _value.stock
@@ -142,7 +131,6 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
   const _$ProductImpl(
       {required this.id,
       required this.name,
-      required this.description,
       required this.stock,
       required this.price});
 
@@ -154,15 +142,13 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
   @override
   final String name;
   @override
-  final String description;
-  @override
   final int stock;
   @override
   final int price;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Product(id: $id, name: $name, description: $description, stock: $stock, price: $price)';
+    return 'Product(id: $id, name: $name, stock: $stock, price: $price)';
   }
 
   @override
@@ -172,7 +158,6 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
       ..add(DiagnosticsProperty('type', 'Product'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('stock', stock))
       ..add(DiagnosticsProperty('price', price));
   }
@@ -184,16 +169,13 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
             other is _$ProductImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
             (identical(other.stock, stock) || other.stock == stock) &&
             (identical(other.price, price) || other.price == price));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, description, stock, price);
+  int get hashCode => Object.hash(runtimeType, id, name, stock, price);
 
   @JsonKey(ignore: true)
   @override
@@ -213,7 +195,6 @@ abstract class _Product implements Product {
   const factory _Product(
       {required final int id,
       required final String name,
-      required final String description,
       required final int stock,
       required final int price}) = _$ProductImpl;
 
@@ -223,8 +204,6 @@ abstract class _Product implements Product {
   int get id;
   @override
   String get name;
-  @override
-  String get description;
   @override
   int get stock;
   @override
