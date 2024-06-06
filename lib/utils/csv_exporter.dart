@@ -1,5 +1,4 @@
 import 'package:csv/csv.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 class CSVExporter {
@@ -10,15 +9,15 @@ class CSVExporter {
       return;
     }
 
-    String csv = convertToCSV(data);
+    String csv = _convertToCSV(data);
     try {
-      await saveCSV(csv, tablename);
+      await _saveCSV(csv, tablename);
     } catch(e) {
       print('Error saving CSV: $e');
     }
   }
 
-  String convertToCSV<T>(List<T> data) {
+  String _convertToCSV<T>(List<T> data) {
     List<List<dynamic>> rows = [];
     var firstObj = (data.first as dynamic).toJson() as Map<String, dynamic>;
     List<String> headers = firstObj.keys.map((key) => key.toString()).toList();
@@ -32,10 +31,9 @@ class CSVExporter {
     return const ListToCsvConverter().convert(rows);
   }
 
-  Future<void> saveCSV(String csv, String tablename) async {
+  Future<void> _saveCSV(String csv, String tablename) async {
     try {
-      final directory = await getExternalStorageDirectory();
-      final path = '${directory!.path}/${tablename}_data.csv';
+      final path = '/storage/emulated/0/Download/${tablename}_data.csv';
       final file = File(path);
 
       await file.writeAsString(csv);

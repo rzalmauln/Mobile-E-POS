@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:e_pos/core/color_values.dart';
 import 'package:e_pos/cubits/product/product_cubit.dart';
 import 'package:e_pos/cubits/product/product_state.dart';
+import 'package:e_pos/data/model/product/product.dart';
 import 'package:e_pos/utils/csv_exporter.dart';
+import 'package:e_pos/utils/csv_importer.dart';
 import 'package:e_pos/views/stock/widgets/modal_create.dart';
 import 'package:e_pos/widgets/basic_app_bar.dart';
 import 'package:e_pos/widgets/navigator_drawer.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
+
 class StockScreen extends StatefulWidget {
   const StockScreen({super.key});
 
@@ -20,6 +24,35 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
+
+  Future<void> _importCSV() async {
+    try {
+      CSVImporter importer = CSVImporter();
+      String filePath = await importer.pickFile();
+
+      if(filePath.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: ColorValues.danger500,
+          content: Text('Gagal mengimport data, mohon coba lagi'),
+        ));
+        return;
+      }
+
+      List<Map<String, dynamic>> data = await importer.readCSV(filePath);
+
+      print('CSV DATA: ${data}');
+      Product object;
+      for(Map<String, dynamic> datas in data) {
+        object = Product.fromJson(datas);
+        print('OBJECT: $object');
+
+        context.read<ProductCubit>().addProduct(object.name, object.stock, object.price);
+      }
+    } catch(e) {
+      print('Error importing: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,17 +86,19 @@ class _StockScreenState extends State<StockScreen> {
                   if (state is LoadedProductState) {
                     var products = state.products;
                     return products.isEmpty
-                        ? SizedBox(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          child: const Center(
-                            child: Text(
-                              "Inventori anda kosong",
-                              style: TextStyle(
-                                fontSize: 17,
-                                letterSpacing: -0.5,
-                                fontWeight: FontWeight.bold,
+                        ? Center(
+                          child: Column(
+                            children: [
+                              _buildExportImportBtn(products),
+                              Text(
+                                "Inventori anda kosong",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  letterSpacing: -0.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         )
                         : Column(children:[
@@ -111,14 +146,27 @@ class _StockScreenState extends State<StockScreen> {
             icon: Icons.file_upload_outlined,
             label: "Ekspor Data",
             onTap: () async {
+              if(data.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: ColorValues.danger500,
+                  content: Text('Gagal mengekspor data'),
+                ));
+                return;
+              }
+
               CSVExporter exporter = CSVExporter();
               try {
                 await exporter.exportToCSV('products', data);
               } catch(e) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: ColorValues.danger500,
+                  content: Text('Gagal mengekspor data, mohon coba lagi'),
+                ));
                 print('Error exporting: $e');
               } finally {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('CSV export for products completed!'),
+                  backgroundColor: ColorValues.success500,
+                  content: Text('Berhasil mengekspor data pada /Downloads'),
                 ));
               }
             },
@@ -126,7 +174,25 @@ class _StockScreenState extends State<StockScreen> {
           _buildActionButton(
             icon: Icons.file_download_outlined,
             label: "Import Data",
-            onTap: () {},
+            onTap: () async {
+              try {
+                await _importCSV();
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Gagal mengimport data'),
+                    backgroundColor: ColorValues.danger500,
+                  ),
+                );
+              } finally {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Berhasil mengimport data'),
+                    backgroundColor: ColorValues.success500,
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
