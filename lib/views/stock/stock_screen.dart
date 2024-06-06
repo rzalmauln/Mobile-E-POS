@@ -18,71 +18,10 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
-  final stock1 = [];
-  final stock = [
-    {
-      "title": "Sabun mandi",
-      "qty": 20,
-      "price": 8000,
-    },
-    {
-      "title": "Shampoo",
-      "qty": 10,
-      "price": 10000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-  ];
   @override
   Widget build(BuildContext context) {
+    context.read<ProductCubit>().loadProducts();
+
     return Scaffold(
       drawer: const NavigatorDrawer(),
       floatingActionButton: Column(

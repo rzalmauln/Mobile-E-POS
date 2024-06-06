@@ -17,7 +17,7 @@ class LoadingOrderDetailState extends OrderDetailState {
 
 class LoadedOrderDetailState extends OrderDetailState {
   LoadedOrderDetailState(this.orderDetails);
-  final OrderDetail orderDetails;
+  final List<OrderDetail> orderDetails;
   @override
   List<Object> get props => [orderDetails];
 }

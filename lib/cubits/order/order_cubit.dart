@@ -66,8 +66,6 @@ class OrderCubit extends Cubit<OrderState> {
         await orderDetailService.insertOrderDetail(orderId, items[i].product.id,
             items[i].quantity, (items[i].quantity * items[i].product.price));
       }
-      // await orderDetailService.insertOrderDetail(
-      //     orderId, productId, qty, price);
     } catch (e) {
       emit(ErrorOrderState(e.toString()));
     }

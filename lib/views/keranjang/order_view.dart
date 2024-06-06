@@ -176,21 +176,25 @@ class _OrderViewState extends State<OrderView> {
                           onPressed: () async {
                             final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            print(await context
+                            // print(await context
+                            //     .read<OrderCubit>()
+                            //     .orderDetailService
+                            //     .getOrderDetails());
+                            context.read<OrderCubit>().addOrder(
+                                prefs.getInt('idStore')!,
+                                context.read<CartCubit>().getTotalPrice(),
+                                DateTime.now());
+
+                            final int idOrder = await context
                                 .read<OrderCubit>()
-                                .orderDetailService
-                                .getOrderDetails());
-                            //   context.read<OrderCubit>().addOrder(
-                            //       prefs.getInt('idStore')!,
-                            //       context.read<CartCubit>().getTotalPrice(),
-                            //       DateTime.now());
+                                .getLastIdOrder();
 
-                            //   final int idOrder = await context
-                            //       .read<OrderCubit>()
-                            //       .getLastIdOrder();
+                            context.read<OrderCubit>().addOrderDetail(idOrder,
+                                context.read<CartCubit>().getAllCart());
 
-                            //   context.read<OrderCubit>().addOrderDetail(idOrder,
-                            //       context.read<CartCubit>().getAllCart());
+                            if (idOrder != 0) {
+                              _setAlert(context);
+                            }
                           },
                           icon: Icon(Icons.arrow_forward),
                           color: Colors.white,
@@ -317,7 +321,7 @@ class _OrderViewState extends State<OrderView> {
         ));
   }
 
-  Future<bool> _setAlert(BuildContext context) async {
+  void _setAlert(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(

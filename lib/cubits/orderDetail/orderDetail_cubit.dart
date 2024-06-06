@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:e_pos/cubits/cart/cart_item.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_state.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_state.dart';
 import 'package:e_pos/data/model/order_detail/order_detail.dart';
@@ -12,7 +13,8 @@ class OrderDetailCubit extends Cubit<OrderDetailState> {
   void getOrderDetail(int id) async {
     emit(LoadingOrderDetailState());
     try {
-      OrderDetail orderDetail = await orderDetailService.getOrderDetail(id);
+      List<OrderDetail> orderDetail =
+          await orderDetailService.getOrderDetail(id);
       emit(LoadedOrderDetailState(orderDetail));
     } catch (e) {
       emit(ErrorOrderDetailState(e.toString()));
@@ -46,4 +48,6 @@ class OrderDetailCubit extends Cubit<OrderDetailState> {
       emit(ErrorOrderDetailState(e.toString()));
     }
   }
+
+  void getTotalItems() async {}
 }

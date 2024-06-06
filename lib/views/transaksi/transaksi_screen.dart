@@ -1,5 +1,9 @@
+import 'package:e_pos/cubits/order/order_cubit.dart';
+import 'package:e_pos/cubits/order/order_state.dart';
 import 'package:e_pos/views/transaksi/detail_transaksi_screen.dart';
+import 'package:e_pos/widgets/navigator_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
@@ -11,21 +15,15 @@ class TransaksiScreen extends StatefulWidget {
 }
 
 class _TransaksiScreenState extends State<TransaksiScreen> {
-  List<int> listId = [121212, 2121223, 43554]; // placeholder
-  List<int> listTotal = [289238, 328123, 2323]; // placeholder
+  // List<int> listId = [121212, 2121223, 43554]; // placeholder
+  // List<int> listTotal = [289238, 328123, 2323]; // placeholder
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavigatorDrawer(),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2563EB),
-        leading: IconButton(
-          onPressed: () {}, // GANTI UNTUK OPEN DRAWER
-          splashColor: Colors.transparent,
-          icon: const Icon(Iconsax.textalign_left),
-        ),
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
         title: const Text(
           "Transaksi",
           style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16),
@@ -36,30 +34,42 @@ class _TransaksiScreenState extends State<TransaksiScreen> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              ListView.builder(
-                itemCount: 3, // GANTI JUMLAH ITEM
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 6, horizontal: 24.0),
-                    child: _buildListItem(
-                      context: context,
-                      onTap: () {
-                        // GANTI FUNCTION ON TAP
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailTransaksiScreen(
-                                    idTransaksi: 21212212)));
+              BlocBuilder<OrderCubit, OrderState>(
+                builder: (context, state) {
+                  if (state is LoadedOrderState) {
+                    return ListView.builder(
+                      itemCount: state.orders.length, // GANTI JUMLAH ITEM
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 24.0),
+                          child: _buildListItem(
+                            context: context,
+                            onTap: () {
+                              // GANTI FUNCTION ON TAP
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailTransaksiScreen(
+                                              idTransaksi:
+                                                  state.orders[index].id)));
+                            },
+                            idTransaksi:
+                                state.orders[index].id, // GANTI ID TRANSAKSI
+                            tglTransaksi: state.orders[index]
+                                .orderDate, // GANTI TANGGAL TRANSAKSI
+                            totalTransaksi: state.orders[index]
+                                .total, // GANTI TOTAL BIAYA TRANSAKSI
+                          ),
+                        );
                       },
-                      idTransaksi: listId[index], // GANTI ID TRANSAKSI
-                      tglTransaksi: DateTime.now(), // GANTI TANGGAL TRANSAKSI
-                      totalTransaksi:
-                          listTotal[index], // GANTI TOTAL BIAYA TRANSAKSI
-                    ),
-                  );
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
                 },
               ),
             ],

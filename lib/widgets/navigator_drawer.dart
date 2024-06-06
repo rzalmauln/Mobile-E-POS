@@ -1,5 +1,6 @@
 import 'package:e_pos/views/home/home_screen.dart';
 import 'package:e_pos/views/stock/stock_screen.dart';
+import 'package:e_pos/views/transaksi/transaksi_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,7 +96,7 @@ class NavigatorDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const StockScreen(),
+                    builder: (context) => const TransaksiScreen(),
                   ));
             },
             child: Padding(

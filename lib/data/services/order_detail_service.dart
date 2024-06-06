@@ -28,11 +28,13 @@ class OrderDetailService {
     });
   }
 
-  Future<OrderDetail> getOrderDetail(int id) async {
+  Future<List<OrderDetail>> getOrderDetail(int id) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps =
-        await db.query('order_details', where: 'id = ?', whereArgs: [id]);
-    return OrderDetail.fromJson(maps.first);
+        await db.query('order_details', where: 'order_id = ?', whereArgs: [id]);
+    return List.generate(maps.length, (i) {
+      return OrderDetail.fromJson(maps[i]);
+    });
   }
 
   Future<List<OrderDetail>> getOrderDetailsByOrderId(int orderId) async {

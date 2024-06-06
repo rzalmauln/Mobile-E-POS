@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProductCubit>().loadProducts();
     return prefs == null
         ? CircularProgressIndicator()
         : // Atau widget lain sebagai indikator loading

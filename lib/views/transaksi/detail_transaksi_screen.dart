@@ -1,4 +1,12 @@
+import 'package:e_pos/cubits/order/order_cubit.dart';
+import 'package:e_pos/cubits/order/order_state.dart';
+import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
+import 'package:e_pos/cubits/orderDetail/orderDetail_state.dart';
+import 'package:e_pos/cubits/product/product_cubit.dart';
+import 'package:e_pos/data/model/order/order.dart';
+import 'package:e_pos/data/model/order_detail/order_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
@@ -11,18 +19,22 @@ class DetailTransaksiScreen extends StatefulWidget {
 }
 
 class _DetailTransaksiScreenState extends State<DetailTransaksiScreen> {
-  List<int> qty = [1, 2, 3, 4, 3];
-  List<String> item = [
-    "rofafgsgfsgdti",
-    "fafafasgsgsbc",
-    "deadfsggfgsaf",
-    "ghafagsgsfdfafi",
-    "jfadafgsgsgfgrkl"
-  ];
-  List<int> harga = [1222121, 1221212, 2132321, 212122, 3212123];
+  String productName = '';
+
+  Future<String> getNameProduct(OrderDetail orderDetails) async {
+    String isi = await context
+        .read<ProductCubit>()
+        .getProductName(orderDetails.productId);
+    return isi;
+  }
+
+  void setString(OrderDetail orderDetails) async {
+    this.productName = await getNameProduct(orderDetails);
+  }
 
   @override
   Widget build(BuildContext context) {
+    context.read<OrderDetailCubit>().getOrderDetail(widget.idTransaksi);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF2563EB),
@@ -58,26 +70,44 @@ class _DetailTransaksiScreenState extends State<DetailTransaksiScreen> {
                     )
                   ],
                 ),
-                _buildInfoTransaksi(
-                  idTransaksi: widget.idTransaksi,
-                  tglTransaksi: DateTime.now(), // GANTI TANGGAL TRANSAKSI
+                BlocBuilder<OrderCubit, OrderState>(
+                  builder: (context, state) {
+                    if (state is LoadedOrderState) {
+                      return _buildInfoTransaksi(
+                        idTransaksi: widget.idTransaksi,
+                        tglTransaksi:
+                            state.orders[widget.idTransaksi - 1].orderDate,
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
                 ),
                 const SizedBox(height: 24),
-                _buildListItem(
-                  // GANTI INFORMASI ITEM
-                  jumlahItem: 5,
-                  qty: qty,
-                  item: item,
-                  harga: harga,
+                BlocBuilder<OrderDetailCubit, OrderDetailState>(
+                  builder: (context, state) {
+                    if (state is LoadedOrderDetailState) {
+                      return _buildListItem(state.orderDetails);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Divider(thickness: 1),
                 ),
-                _buildTotalTransaksi(
-                    total: 212121,
-                    bayar: 2322331,
-                    kembalian: 0), // GANTI TOTAL AKHIR TRANSAKSI
+                BlocBuilder<OrderCubit, OrderState>(
+                  builder: (context, state) {
+                    if (state is LoadedOrderState) {
+                      return _buildTotalTransaksi(
+                        total: state.orders[widget.idTransaksi - 1].total,
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ), // GANTI TOTAL AKHIR TRANSAKSI
                 const SizedBox(height: 10)
               ],
             ),
@@ -87,8 +117,7 @@ class _DetailTransaksiScreenState extends State<DetailTransaksiScreen> {
     );
   }
 
-  Column _buildTotalTransaksi(
-      {required int total, required int bayar, required int kembalian}) {
+  Column _buildTotalTransaksi({required int total}) {
     return Column(
       children: [
         Padding(
@@ -109,51 +138,11 @@ class _DetailTransaksiScreenState extends State<DetailTransaksiScreen> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Bayar",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                NumberFormat.decimalPattern('id').format(bayar),
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Kembalian",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                NumberFormat.decimalPattern('id').format(kembalian),
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
 
-  Column _buildListItem(
-      {required int jumlahItem,
-      required List<int> qty,
-      required List<String> item,
-      required List<int> harga}) {
+  Column _buildListItem(List<OrderDetail> orderDetails) {
     return Column(
       children: [
         const Padding(
@@ -191,44 +180,61 @@ class _DetailTransaksiScreenState extends State<DetailTransaksiScreen> {
         ),
         const SizedBox(height: 10),
         ListView.builder(
-          itemCount: jumlahItem,
+          itemCount: orderDetails.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 6, horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Text(
-                      qty[index].toString(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600),
+            return orderDetails[index].qty == 0
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 6, horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: Text(
+                            orderDetails[index].qty.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 4,
+                          child: FutureBuilder<String>(
+                              future: getNameProduct(orderDetails[index]),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (snapshot.data != "") {
+                                  return Text(
+                                    snapshot.data!,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600),
+                                  );
+                                }
+                                return Text("data");
+                              }),
+                        ),
+                        const Spacer(),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            NumberFormat.decimalPattern('id')
+                                .format(orderDetails[index].price),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Flexible(
-                    flex: 4,
-                    child: Text(
-                      item[index],
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  const Spacer(),
-                  Flexible(
-                    flex: 2,
-                    child: Text(
-                      NumberFormat.decimalPattern('id').format(harga[index]),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
-            );
+                  );
           },
         ),
       ],

@@ -22,12 +22,12 @@ class LoadedOrderState extends OrderState {
   List<Object> get props => [orders];
 }
 
-class LoadedOrderDetailState extends OrderState {
-  LoadedOrderDetailState(this.ordersDetail);
-  final OrderDetail ordersDetail;
-  @override
-  List<Object> get props => [ordersDetail];
-}
+// class LoadedOrderDetailState extends OrderState {
+//   LoadedOrderDetailState(this.ordersDetail);
+//   final OrderDetail ordersDetail;
+//   @override
+//   List<Object> get props => [ordersDetail];
+// }
 
 class GetOrderState extends OrderState {
   GetOrderState(this.order);
