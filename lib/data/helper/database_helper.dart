@@ -49,7 +49,8 @@ class DatabaseHelper {
   CREATE TABLE orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     store_id INTEGER,
-    description TEXT NOT NULL, 
+    total INTEGER,
+    order_date TEXT,
     FOREIGN KEY (store_id) REFERENCES stores(id)
   );
   ''';

@@ -4,14 +4,24 @@ import '../helper/database_helper.dart';
 class OrderDetailService {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
 
-  Future<void> insertOrder(OrderDetail orderDetail) async {
+  Future<void> insertOrderDetail(
+      int orderId, int productId, int qty, int price) async {
     final db = await _databaseHelper.database;
-    await db.insert('order_detail', orderDetail.toJson());
+    try {
+      db.insert('order_details', {
+        'order_id': orderId,
+        'product_id': productId,
+        'qty': qty,
+        'price': price
+      });
+    } catch (e) {
+      throw Exception('Add Order detail failed: ${e.toString()}');
+    }
   }
 
   Future<List<OrderDetail>> getOrderDetails() async {
     final db = await _databaseHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('order_detail');
+    final List<Map<String, dynamic>> maps = await db.query('order_details');
 
     return List.generate(maps.length, (i) {
       return OrderDetail.fromJson(maps[i]);
@@ -21,14 +31,14 @@ class OrderDetailService {
   Future<OrderDetail> getOrderDetail(int id) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps =
-        await db.query('order_detail', where: 'id = ?', whereArgs: [id]);
+        await db.query('order_details', where: 'id = ?', whereArgs: [id]);
     return OrderDetail.fromJson(maps.first);
   }
 
   Future<List<OrderDetail>> getOrderDetailsByOrderId(int orderId) async {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
-      'order_detail',
+      'order_details',
       where: 'order_id = ?',
       whereArgs: [orderId],
     );
@@ -40,7 +50,7 @@ class OrderDetailService {
   Future<void> updateOrderDetail(OrderDetail orderDetail) async {
     final db = await _databaseHelper.database;
     await db.update(
-      'order_detail',
+      'order_details',
       orderDetail.toJson(),
       where: 'id = ?',
       whereArgs: [orderDetail.id],
@@ -50,7 +60,7 @@ class OrderDetailService {
   Future<void> deleteOrderDetail(int id) async {
     final db = await _databaseHelper.database;
     await db.delete(
-      'order_detail',
+      'order_details',
       where: 'id = ?',
       whereArgs: [id],
     );

@@ -13,7 +13,6 @@ _$OrderDetailImpl _$$OrderDetailImplFromJson(Map<String, dynamic> json) =>
       productId: (json['product_id'] as num).toInt(),
       qty: (json['qty'] as num).toInt(),
       price: (json['price'] as num).toInt(),
-      orderDetailDate: DateTime.parse(json['order_detail_date'] as String),
     );
 
 Map<String, dynamic> _$$OrderDetailImplToJson(_$OrderDetailImpl instance) =>
@@ -23,5 +22,4 @@ Map<String, dynamic> _$$OrderDetailImplToJson(_$OrderDetailImpl instance) =>
       'product_id': instance.productId,
       'qty': instance.qty,
       'price': instance.price,
-      'order_detail_date': instance.orderDetailDate.toIso8601String(),
     };

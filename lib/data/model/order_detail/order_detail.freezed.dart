@@ -25,7 +25,6 @@ mixin _$OrderDetail {
   int get productId => throw _privateConstructorUsedError;
   int get qty => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
-  DateTime get orderDetailDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,13 +38,7 @@ abstract class $OrderDetailCopyWith<$Res> {
           OrderDetail value, $Res Function(OrderDetail) then) =
       _$OrderDetailCopyWithImpl<$Res, OrderDetail>;
   @useResult
-  $Res call(
-      {int id,
-      int orderId,
-      int productId,
-      int qty,
-      int price,
-      DateTime orderDetailDate});
+  $Res call({int id, int orderId, int productId, int qty, int price});
 }
 
 /// @nodoc
@@ -66,7 +59,6 @@ class _$OrderDetailCopyWithImpl<$Res, $Val extends OrderDetail>
     Object? productId = null,
     Object? qty = null,
     Object? price = null,
-    Object? orderDetailDate = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -89,10 +81,6 @@ class _$OrderDetailCopyWithImpl<$Res, $Val extends OrderDetail>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      orderDetailDate: null == orderDetailDate
-          ? _value.orderDetailDate
-          : orderDetailDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ) as $Val);
   }
 }
@@ -105,13 +93,7 @@ abstract class _$$OrderDetailImplCopyWith<$Res>
       __$$OrderDetailImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      int orderId,
-      int productId,
-      int qty,
-      int price,
-      DateTime orderDetailDate});
+  $Res call({int id, int orderId, int productId, int qty, int price});
 }
 
 /// @nodoc
@@ -130,7 +112,6 @@ class __$$OrderDetailImplCopyWithImpl<$Res>
     Object? productId = null,
     Object? qty = null,
     Object? price = null,
-    Object? orderDetailDate = null,
   }) {
     return _then(_$OrderDetailImpl(
       id: null == id
@@ -153,10 +134,6 @@ class __$$OrderDetailImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
-      orderDetailDate: null == orderDetailDate
-          ? _value.orderDetailDate
-          : orderDetailDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -170,8 +147,7 @@ class _$OrderDetailImpl with DiagnosticableTreeMixin implements _OrderDetail {
       required this.orderId,
       required this.productId,
       required this.qty,
-      required this.price,
-      required this.orderDetailDate});
+      required this.price});
 
   factory _$OrderDetailImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderDetailImplFromJson(json);
@@ -186,12 +162,10 @@ class _$OrderDetailImpl with DiagnosticableTreeMixin implements _OrderDetail {
   final int qty;
   @override
   final int price;
-  @override
-  final DateTime orderDetailDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderDetail(id: $id, orderId: $orderId, productId: $productId, qty: $qty, price: $price, orderDetailDate: $orderDetailDate)';
+    return 'OrderDetail(id: $id, orderId: $orderId, productId: $productId, qty: $qty, price: $price)';
   }
 
   @override
@@ -203,8 +177,7 @@ class _$OrderDetailImpl with DiagnosticableTreeMixin implements _OrderDetail {
       ..add(DiagnosticsProperty('orderId', orderId))
       ..add(DiagnosticsProperty('productId', productId))
       ..add(DiagnosticsProperty('qty', qty))
-      ..add(DiagnosticsProperty('price', price))
-      ..add(DiagnosticsProperty('orderDetailDate', orderDetailDate));
+      ..add(DiagnosticsProperty('price', price));
   }
 
   @override
@@ -217,15 +190,13 @@ class _$OrderDetailImpl with DiagnosticableTreeMixin implements _OrderDetail {
             (identical(other.productId, productId) ||
                 other.productId == productId) &&
             (identical(other.qty, qty) || other.qty == qty) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.orderDetailDate, orderDetailDate) ||
-                other.orderDetailDate == orderDetailDate));
+            (identical(other.price, price) || other.price == price));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, orderId, productId, qty, price, orderDetailDate);
+  int get hashCode =>
+      Object.hash(runtimeType, id, orderId, productId, qty, price);
 
   @JsonKey(ignore: true)
   @override
@@ -247,8 +218,7 @@ abstract class _OrderDetail implements OrderDetail {
       required final int orderId,
       required final int productId,
       required final int qty,
-      required final int price,
-      required final DateTime orderDetailDate}) = _$OrderDetailImpl;
+      required final int price}) = _$OrderDetailImpl;
 
   factory _OrderDetail.fromJson(Map<String, dynamic> json) =
       _$OrderDetailImpl.fromJson;
@@ -263,8 +233,6 @@ abstract class _OrderDetail implements OrderDetail {
   int get qty;
   @override
   int get price;
-  @override
-  DateTime get orderDetailDate;
   @override
   @JsonKey(ignore: true)
   _$$OrderDetailImplCopyWith<_$OrderDetailImpl> get copyWith =>

@@ -35,14 +35,7 @@ class _IncrementDecrementState extends State<IncrementDecrement> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildIconButton(
-                onPressed: widget.value <= 0
-                    ? null
-                    : () {
-                  setState(() {
-                    widget.value = widget.value - 1;
-                    widget.controller.text = widget.value.toString();
-                  });
-                },
+                onPressed: () {},
                 icon: Icons.remove,
               ),
               SizedBox(
@@ -61,10 +54,7 @@ class _IncrementDecrementState extends State<IncrementDecrement> {
               ),
               _buildIconButton(
                 onPressed: () {
-                  setState(() {
-                    widget.value = widget.value + 1;
-                    widget.controller.text = widget.value.toString();
-                  });
+                  setState(() {});
                 },
                 icon: Icons.add,
               ),

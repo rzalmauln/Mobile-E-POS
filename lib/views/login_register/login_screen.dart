@@ -22,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void check() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('userLogin', true);
+    prefs.setInt('idStore', 0);
+    prefs.setString('nameStore', "");
   }
 
   @override
@@ -70,7 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     content: const Text('Welcome to Jaya Makmur POS!'),
                     actions: [
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setInt('idStore', state.store.id);
+                          prefs.setString('nameStore', state.store.name);
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
@@ -93,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-              check();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

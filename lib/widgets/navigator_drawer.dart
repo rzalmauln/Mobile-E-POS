@@ -42,16 +42,17 @@ class NavigatorDrawer extends StatelessWidget {
             const EdgeInsets.only(top: 38, bottom: 38, left: 30, right: 30),
         child: Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Icon(Icons.account_box),
               Text(
-                "Razol Berkah Makmur",
+                "E - POS",
                 style: GoogleFonts.plusJakartaSans(
                   textStyle: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w600),
                 ),
               ),
+              const SizedBox()
             ]),
       ),
     );

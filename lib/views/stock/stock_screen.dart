@@ -151,8 +151,8 @@ class _StockScreenState extends State<StockScreen> {
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         var product = products[index];
-                        return _buildCard(
-                            product.name, product.stock, product.price, product.id);
+                        return _buildCard(product.name, product.stock,
+                            product.price, product.id);
                       },
                     );
                   }
@@ -198,10 +198,10 @@ class _StockScreenState extends State<StockScreen> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   width: 50.w,
-                  child: Text(title,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.clip,
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.clip,
                   ),
                 ),
                 Text(
@@ -307,8 +307,8 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  Future<bool> _setAlertDelete(BuildContext context, String title, int id) async {
-    return await showDialog(
+  void _setAlertDelete(BuildContext context, String title, int id) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(

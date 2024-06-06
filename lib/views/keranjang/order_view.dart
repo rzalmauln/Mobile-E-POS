@@ -1,8 +1,23 @@
+import 'dart:async';
+
+import 'package:e_pos/cubits/cart/cart_cubit.dart';
+import 'package:e_pos/cubits/cart/cart_item.dart';
+import 'package:e_pos/cubits/cart/cart_state.dart';
+import 'package:e_pos/cubits/order/order_cubit.dart';
+import 'package:e_pos/cubits/order/order_state.dart';
+import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
+import 'package:e_pos/cubits/orderDetail/orderDetail_state.dart';
+import 'package:e_pos/data/model/order/order.dart';
 import 'package:e_pos/data/model/order_detail/order_detail.dart';
 import 'package:e_pos/views/keranjang/increment_decrement.dart';
+import 'package:e_pos/views/keranjang/widgets/custom_field.dart';
+import 'package:e_pos/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderView extends StatefulWidget {
   const OrderView({super.key});
@@ -12,34 +27,18 @@ class OrderView extends StatefulWidget {
 }
 
 class _OrderViewState extends State<OrderView> {
-  // int quantity = 0;
-  final stock = [
-    {
-      "title": "Sabun mandi",
-      "qty": 20,
-      "price": 8000,
-    },
-    {
-      "title": "Shampoo",
-      "qty": 10,
-      "price": 10000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-    {
-      "title": "Pasta Gigi",
-      "qty": 15,
-      "price": 5000,
-    },
-  ];
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      // print(context.read<CartCubit>().getChange());
+      context.read<CartCubit>().setPay(int.parse(_controller.text));
+      print(context.read<CartCubit>().getPay());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +71,7 @@ class _OrderViewState extends State<OrderView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Column(children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -91,26 +90,6 @@ class _OrderViewState extends State<OrderView> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "ID Transaksi",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "123456",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +99,8 @@ class _OrderViewState extends State<OrderView> {
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold),
                       ),
-                      Text("23/04/1999",
+                      Text(
+                          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}/',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
@@ -136,69 +116,31 @@ class _OrderViewState extends State<OrderView> {
             ),
           ),
           SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: stock.length,
-              itemBuilder: (context, index) {
-                var item = stock[index];
-                return _buildCard(item['title'].toString(),
-                    item['qty'] as int, item['price'] as int,index);
-              },
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey[300]!,
-                  width: 1,
+          BlocConsumer<CartCubit, CartState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) {
+                    var item = state.items[index];
+                    var id = index + item.product.id;
+                    if (item.quantity > 0) {
+                      return _buildCard(
+                          item.product.id,
+                          item.product.name.toString(),
+                          item.quantity as int,
+                          item.product.price as int,
+                          index);
+                    } else {
+                      return Container();
+                    }
+                  },
                 ),
-              ),
-              color: Colors.white,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Bayar",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Rp. 100.000",
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey[300]!,
-                  width: 1,
-                ),
-              ),
-              color: Colors.white,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Kembalian",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Rp. 0",
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 39),
@@ -216,20 +158,44 @@ class _OrderViewState extends State<OrderView> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      "Rp. 100.000",
-                      style: TextStyle(
-                          fontSize: 17,
-                          letterSpacing: -0.5,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _setAlert(context);
+                    BlocBuilder<CartCubit, CartState>(
+                      builder: (context, state) {
+                        return Text(
+                          "Rp. ${context.read<CartCubit>().getTotalPrice().toString()}",
+                          style: TextStyle(
+                              fontSize: 17,
+                              letterSpacing: -0.5,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        );
                       },
-                      icon: Icon(Icons.arrow_forward),
-                      color: Colors.white,
+                    ),
+                    BlocBuilder<OrderCubit, OrderState>(
+                      builder: (context, state) {
+                        return IconButton(
+                          onPressed: () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            print(await context
+                                .read<OrderCubit>()
+                                .orderDetailService
+                                .getOrderDetails());
+                            //   context.read<OrderCubit>().addOrder(
+                            //       prefs.getInt('idStore')!,
+                            //       context.read<CartCubit>().getTotalPrice(),
+                            //       DateTime.now());
+
+                            //   final int idOrder = await context
+                            //       .read<OrderCubit>()
+                            //       .getLastIdOrder();
+
+                            //   context.read<OrderCubit>().addOrderDetail(idOrder,
+                            //       context.read<CartCubit>().getAllCart());
+                          },
+                          icon: Icon(Icons.arrow_forward),
+                          color: Colors.white,
+                        );
+                      },
                     )
                   ],
                 ),
@@ -241,52 +207,114 @@ class _OrderViewState extends State<OrderView> {
     );
   }
 
-  Widget _buildCard(String title, int qty, int price, int index) {
+  Widget _buildCard(
+      int productId, String title, int qty, int price, int index) {
     // var item = stock[index];
-    TextEditingController qtyController = TextEditingController(text: qty.toString());
+    TextEditingController qtyController =
+        TextEditingController(text: qty.toString());
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
             color: Colors.white,
-            width: 1,
+            border: Border.all(
+              color: Colors.white,
+              width: 1,
+            ),
           ),
-        ),
-        child:
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style:
-                    TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${qty} x ${price}",
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey[400],
-                          fontWeight: FontWeight.bold),
-                    ),
-                    IncrementDecrement(controller: qtyController,value: qty,),
-                  ],
-                ),
-                Text(
-                  "Rp${(qty * price).toString()}",
-                  style: TextStyle(fontSize: 11, color: Colors.blue[600]),
-                ),
-              ],
-      ),
-    )
-    );
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${qty} x ${price}",
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey[400],
+                        fontWeight: FontWeight.bold),
+                  ),
+                  BlocBuilder<CartCubit, CartState>(
+                    builder: (context, state) {
+                      final cartItem = state.items.firstWhere(
+                        (item) => item.product.id == productId,
+                        orElse: () => CartItem(
+                            product: state.items[index].product, quantity: 0),
+                      );
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (cartItem.quantity > 0) {
+                                context
+                                    .read<CartCubit>()
+                                    .decreaseItemQuantity(productId);
+                              }
+                            },
+                            child: Container(
+                              height: 32,
+                              width: 32,
+                              decoration: BoxDecoration(
+                                color: Colors.blue[600],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              cartItem.quantity.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<CartCubit>()
+                                  .increaseItemQuantity(productId);
+                              print(context.read<CartCubit>().getAllCart());
+                            },
+                            child: Container(
+                              height: 32,
+                              width: 32,
+                              decoration: BoxDecoration(
+                                color: Colors.blue[600],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Text(
+                "Rp${(qty * price).toString()}",
+                style: TextStyle(fontSize: 11, color: Colors.blue[600]),
+              ),
+            ],
+          ),
+        ));
   }
 
   Future<bool> _setAlert(BuildContext context) async {
@@ -358,8 +386,8 @@ class _OrderViewState extends State<OrderView> {
     );
   }
 
-  Future<bool> _setAlertDelete(BuildContext context) async {
-    return await showDialog(
+  void _setAlertDelete(BuildContext context) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
@@ -410,7 +438,11 @@ class _OrderViewState extends State<OrderView> {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.read<CartCubit>().clearCart();
+
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     padding: EdgeInsets.all(16),
