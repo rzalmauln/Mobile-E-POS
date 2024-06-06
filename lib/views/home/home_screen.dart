@@ -119,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: products.length,
                             itemBuilder: (context, index) {
                               var product = products[index];
-                              return _buildCard(product, context);
+                              return product.stock != 0
+                                  ? _buildCard(product, context)
+                                  : Container();
                             },
                           );
                         }

@@ -7,8 +7,10 @@ import 'package:e_pos/cubits/order/order_cubit.dart';
 import 'package:e_pos/cubits/order/order_state.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_cubit.dart';
 import 'package:e_pos/cubits/orderDetail/orderDetail_state.dart';
+import 'package:e_pos/cubits/product/product_cubit.dart';
 import 'package:e_pos/data/model/order/order.dart';
 import 'package:e_pos/data/model/order_detail/order_detail.dart';
+import 'package:e_pos/data/model/product/product.dart';
 import 'package:e_pos/views/keranjang/increment_decrement.dart';
 import 'package:e_pos/views/keranjang/widgets/custom_field.dart';
 import 'package:e_pos/widgets/custom_text_field.dart';
@@ -176,10 +178,7 @@ class _OrderViewState extends State<OrderView> {
                           onPressed: () async {
                             final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            // print(await context
-                            //     .read<OrderCubit>()
-                            //     .orderDetailService
-                            //     .getOrderDetails());
+
                             context.read<OrderCubit>().addOrder(
                                 prefs.getInt('idStore')!,
                                 context.read<CartCubit>().getTotalPrice(),
@@ -191,6 +190,41 @@ class _OrderViewState extends State<OrderView> {
 
                             context.read<OrderCubit>().addOrderDetail(idOrder,
                                 context.read<CartCubit>().getAllCart());
+
+                            for (int i = 0;
+                                i <
+                                    context
+                                        .read<CartCubit>()
+                                        .getAllCart()
+                                        .length;
+                                i++) {
+                              context.read<ProductCubit>().updateProduct(
+                                  Product(
+                                      id: context
+                                          .read<CartCubit>()
+                                          .getAllCart()[i]
+                                          .product
+                                          .id,
+                                      name: context
+                                          .read<CartCubit>()
+                                          .getAllCart()[i]
+                                          .product
+                                          .name,
+                                      stock: context
+                                              .read<CartCubit>()
+                                              .getAllCart()[i]
+                                              .product
+                                              .stock -
+                                          context
+                                              .read<CartCubit>()
+                                              .getAllCart()[i]
+                                              .quantity,
+                                      price: context
+                                          .read<CartCubit>()
+                                          .getAllCart()[i]
+                                          .product
+                                          .price));
+                            }
 
                             if (idOrder != 0) {
                               _setAlert(context);
