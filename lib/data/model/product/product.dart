@@ -10,12 +10,8 @@ class Product with _$Product {
   const factory Product({
     required int id,
     required String name,
-    required String description,
     required int stock,
     required int price,
-    required int categoryId,
-    required DateTime createdAt,
-    required DateTime updatedAt,
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) =>

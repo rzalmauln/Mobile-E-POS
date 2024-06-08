@@ -13,7 +13,6 @@ class OrderDetail with _$OrderDetail {
     required int productId,
     required int qty,
     required int price,
-    required DateTime orderDetailDate,
   }) = _OrderDetail;
 
   factory OrderDetail.fromJson(Map<String, dynamic> json) =>
