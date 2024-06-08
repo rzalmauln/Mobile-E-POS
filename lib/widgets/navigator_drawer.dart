@@ -144,28 +144,6 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 30),
-          //   child: Row(
-          //     children: [
-          //       SvgPicture.asset('assets/icons/document-text.svg',
-          //           colorFilter:
-          //               const ColorFilter.mode(Colors.grey, BlendMode.srcIn)),
-          //       Padding(
-          //         padding: const EdgeInsets.only(left: 12),
-          //         child: Text(
-          //           "Laporan",
-          //           style: GoogleFonts.plusJakartaSans(
-          //             textStyle: const TextStyle(
-          //                 color: Color(0xff64748B),
-          //                 fontSize: 17,
-          //                 fontWeight: FontWeight.w600),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           GestureDetector(
             onTap: () {
               context.read<DrawerCubit>().setDrawer(2);
@@ -204,28 +182,6 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 30),
-          //   child: Row(
-          //     children: [
-          //       SvgPicture.asset('assets/icons/shop.svg',
-          //           colorFilter:
-          //               const ColorFilter.mode(Colors.grey, BlendMode.srcIn)),
-          //       Padding(
-          //         padding: const EdgeInsets.only(left: 12),
-          //         child: Text(
-          //           "Sinkronisasi Data",
-          //           style: GoogleFonts.plusJakartaSans(
-          //             textStyle: const TextStyle(
-          //                 color: Color(0xff64748B),
-          //                 fontSize: 17,
-          //                 fontWeight: FontWeight.w600),
-          //           ),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
